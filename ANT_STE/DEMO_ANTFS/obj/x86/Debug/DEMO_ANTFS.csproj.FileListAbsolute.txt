@@ -1,0 +1,23 @@
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\Debug\Demo_ANTFS.exe.config
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\Debug\Demo_ANTFS.exe
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\Debug\Demo_ANTFS.pdb
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_ANTFS\obj\x86\Debug\DEMO_ANTFS.csproj.CoreCompileInputs.cache
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_ANTFS\obj\x86\Debug\DEMO_ANTFS.csproj.CopyComplete
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_ANTFS\obj\x86\Debug\Demo_ANTFS.exe
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_ANTFS\obj\x86\Debug\Demo_ANTFS.pdb
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_ANTFS\obj\x86\Debug\DEMO_ANTFS.csprojAssemblyReference.cache
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\Demo_ANTFS.exe.config
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\Demo_ANTFS.exe
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\Demo_ANTFS.pdb
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\DEMO_ANTFS.csprojAssemblyReference.cache
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\DEMO_ANTFS.csproj.CopyComplete
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\Demo_ANTFS.exe
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\Demo_ANTFS.pdb
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\Demo_ANTFS.exe.config
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\Demo_ANTFS.exe
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\Demo_ANTFS.pdb
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\DEMO_ANTFS.csprojAssemblyReference.cache
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\DEMO_ANTFS.csproj.CoreCompileInputs.cache
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\DEMO_ANTFS.csproj.CopyComplete
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\Demo_ANTFS.exe
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_ANTFS\obj\x86\Debug\Demo_ANTFS.pdb

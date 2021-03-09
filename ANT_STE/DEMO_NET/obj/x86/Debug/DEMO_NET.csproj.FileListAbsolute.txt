@@ -1,0 +1,21 @@
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\Debug\demo_net.exe.config
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\Debug\demo_net.exe
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\Debug\demo_net.pdb
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_NET\obj\x86\Debug\DEMO_NET.csproj.CoreCompileInputs.cache
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_NET\obj\x86\Debug\DEMO_NET.csproj.CopyComplete
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_NET\obj\x86\Debug\demo_net.exe
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\DEMO_NET\obj\x86\Debug\demo_net.pdb
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\demo_net.exe.config
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\demo_net.exe
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\demo_net.pdb
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\DEMO_NET.csprojAssemblyReference.cache
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\DEMO_NET.csproj.CopyComplete
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\demo_net.exe
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\demo_net.pdb
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\demo_net.exe.config
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\demo_net.exe
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\demo_net.pdb
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\DEMO_NET.csproj.CoreCompileInputs.cache
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\DEMO_NET.csproj.CopyComplete
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\demo_net.exe
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\demo_net.pdb

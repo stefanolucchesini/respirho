@@ -195,7 +195,7 @@ void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, 
 				*/
 				
 #include <math.h>
-#define MAGNETOMETRO_ABILITATO 1
+#define MAGNETOMETRO_ABILITATO 0
 
 
 float pitch, yaw, roll;

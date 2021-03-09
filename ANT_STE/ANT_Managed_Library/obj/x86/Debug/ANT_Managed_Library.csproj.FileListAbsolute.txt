@@ -1,0 +1,17 @@
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\Debug\ANT_NET.dll
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\Debug\ANT_NET.pdb
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\ANT_Managed_Library\obj\x86\Debug\ANT_Managed_Library.csproj.CoreCompileInputs.cache
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\ANT_Managed_Library\obj\x86\Debug\ANT_NET.dll
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\ANT_Managed_Library\obj\x86\Debug\ANT_NET.pdb
+\\Mac\Home\Downloads\ANT-SDK_PC.3.5_1_mod\ANT_Managed_Library\obj\x86\Debug\ANT_Managed_Library.csprojAssemblyReference.cache
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\ANT_NET.dll
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\ANT_NET.pdb
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_Managed_Library.csprojAssemblyReference.cache
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_NET.dll
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_NET.pdb
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\ANT_NET.dll
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\ANT_NET.pdb
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_Managed_Library.csprojAssemblyReference.cache
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_Managed_Library.csproj.CoreCompileInputs.cache
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_NET.dll
+C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_NET.pdb
