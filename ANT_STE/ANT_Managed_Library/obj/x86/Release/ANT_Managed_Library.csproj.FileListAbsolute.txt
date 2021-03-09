@@ -53,3 +53,10 @@ C:\Users\Stefano\Desktop\ANT_CON_STOP\ANT_Managed_Library\obj\x86\Release\ANT_Ma
 C:\Users\Stefano\Desktop\ANT_CON_STOP\ANT_Managed_Library\obj\x86\Release\ANT_Managed_Library.csproj.CoreCompileInputs.cache
 C:\Users\Stefano\Desktop\ANT_CON_STOP\ANT_Managed_Library\obj\x86\Release\ANT_NET.dll
 C:\Users\Stefano\Desktop\ANT_CON_STOP\ANT_Managed_Library\obj\x86\Release\ANT_NET.pdb
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_NET.xml
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_NET.dll
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_NET.pdb
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_Managed_Library\obj\x86\Release\ANT_Managed_Library.csprojAssemblyReference.cache
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_Managed_Library\obj\x86\Release\ANT_Managed_Library.csproj.CoreCompileInputs.cache
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_Managed_Library\obj\x86\Release\ANT_NET.dll
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_Managed_Library\obj\x86\Release\ANT_NET.pdb

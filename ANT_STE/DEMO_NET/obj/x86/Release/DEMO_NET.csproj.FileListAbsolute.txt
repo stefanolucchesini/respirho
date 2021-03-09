@@ -56,3 +56,11 @@ C:\Users\Stefano\Desktop\ANT_CON_STOP\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.C
 C:\Users\Stefano\Desktop\ANT_CON_STOP\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
 C:\Users\Stefano\Desktop\ANT_CON_STOP\DEMO_NET\obj\x86\Release\demo_net.exe
 C:\Users\Stefano\Desktop\ANT_CON_STOP\DEMO_NET\obj\x86\Release\demo_net.pdb
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\demo_net.exe.config
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\demo_net.exe
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\demo_net.pdb
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Release\DEMO_NET.csprojAssemblyReference.cache
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CoreCompileInputs.cache
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Release\demo_net.exe
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Release\demo_net.pdb

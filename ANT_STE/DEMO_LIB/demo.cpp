@@ -281,11 +281,33 @@ void Demo::Start()
 		case 'q':
 		{
 			// Quit
-			fclose(fp1);
-			printf("Closing channel...\n");
+			fclose(fp1); //chiude il file creato
+			//printf("Closing channel...\n");
+			printf("Vuoi fare una nuova acquisizione? (premi s e invio per Si, n e invio per No) \n");
 			bBroadcasting = FALSE;
-			pclMessageObject->CloseChannel(USER_ANTCHANNEL, MESSAGE_TIMEOUT);
-			break;
+			
+			UCHAR risposta;
+			char stringa[1024];
+			fgets(stringa, sizeof(stringa), stdin);
+			sscanf(stringa, "%c", &risposta);
+			if (risposta == 's' || risposta == 'S') {
+				// Create message thread.
+				uiDSIThread = DSIThread_CreateThread(&Demo::RunMessageThread, this);
+				assert(uiDSIThread);
+
+				printf("Name of the new file: "); fflush(stdout);
+				char filename[1024];
+				scanf("%s", filename);
+				strcat(filename, ".txt ");
+
+				printf("Initialization was successful!\n"); fflush(stdout);
+				fopen_s(&fp1, filename, "w");
+				bStatus = InitANT(); //re-inizializza
+				break;
+			}
+			else
+				pclMessageObject->CloseChannel(USER_ANTCHANNEL, MESSAGE_TIMEOUT);  //chiude il canale
+				break;
 		}
 		case 'A':
 		case 'a':
