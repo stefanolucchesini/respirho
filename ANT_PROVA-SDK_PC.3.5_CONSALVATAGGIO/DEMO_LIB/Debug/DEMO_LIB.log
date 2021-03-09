@@ -1,0 +1,14 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  demo.cpp
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_LIB\demo.cpp(132,14): warning C4477: 'sscanf' : format string '%u' requires an argument of type 'unsigned int *', but variadic argument 1 has type 'UCHAR *'
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_LIB\demo.cpp(132,14): message : consider using '%hhu' in the format string
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_LIB\demo.cpp(132,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_LIB\demo.cpp(176,1): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1274): message : see declaration of 'scanf'
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_LIB\demo.cpp(177,1): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\string.h(90): message : see declaration of 'strcat'
+C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_LIB\demo.cpp(229,1): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message : see declaration of 'sscanf'
+demo.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  DEMO_LIB.vcxproj -> C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\DEMO_LIB.exe

@@ -1,0 +1,4 @@
+﻿  DLL_exports.cpp
+ant_lib.lib(macros.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+     Creating library C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\ANT_WrappedLib.lib and object C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\ANT_WrappedLib.exp
+  ANT_Unmanaged_Wrapper.vcxproj -> C:\Users\Lorenzo\Documents\University\Tesi Magistrale\gestione ANT\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\ANT_WrappedLib.dll

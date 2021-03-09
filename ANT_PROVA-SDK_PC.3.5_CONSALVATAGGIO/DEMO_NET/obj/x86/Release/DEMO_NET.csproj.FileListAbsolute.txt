@@ -1,0 +1,42 @@
+\\Mac\Home\Desktop\ANT-SDK_PC.3.5\Release\demo_net.exe.config
+\\Mac\Home\Desktop\ANT-SDK_PC.3.5\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT-SDK_PC.3.5\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT-SDK_PC.3.5\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CoreCompileInputs.cache
+\\Mac\Home\Desktop\ANT-SDK_PC.3.5\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
+\\Mac\Home\Desktop\ANT-SDK_PC.3.5\DEMO_NET\obj\x86\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT-SDK_PC.3.5\DEMO_NET\obj\x86\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5 -\Release\demo_net.exe.config
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5 -\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5 -\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5 -\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CoreCompileInputs.cache
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5 -\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5 -\DEMO_NET\obj\x86\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5 -\DEMO_NET\obj\x86\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD\Release\demo_net.exe.config
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CoreCompileInputs.cache
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD\DEMO_NET\obj\x86\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD\DEMO_NET\obj\x86\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_1\Release\demo_net.exe.config
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_1\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_1\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_1\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CoreCompileInputs.cache
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_1\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_1\DEMO_NET\obj\x86\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_1\DEMO_NET\obj\x86\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_2\Release\demo_net.exe.config
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_2\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_2\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_2\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CoreCompileInputs.cache
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_2\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_2\DEMO_NET\obj\x86\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_2\DEMO_NET\obj\x86\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_3\Release\demo_net.exe.config
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_3\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_3\Release\demo_net.pdb
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_3\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CoreCompileInputs.cache
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_3\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_3\DEMO_NET\obj\x86\Release\demo_net.exe
+\\Mac\Home\Desktop\ANT_PROVA-SDK_PC.3.5_MOD_3\DEMO_NET\obj\x86\Release\demo_net.pdb

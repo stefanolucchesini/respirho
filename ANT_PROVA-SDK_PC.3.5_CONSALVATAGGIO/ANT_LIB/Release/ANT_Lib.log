@@ -1,0 +1,41 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (ANT_LIB 2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  antfs_client_channel.cpp
+\\Mac\AURELIA\TESI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_LIB\software\ANTFS\antfs_client_channel.cpp(1046,136): warning C4100:  'pvData_': parametro formale senza riferimenti
+  antfs_host.cpp
+  antfs_host_channel.cpp
+\\Mac\AURELIA\TESI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_LIB\software\ANTFS\antfs_client_channel.cpp(1046,115): warning C4100:  'ulDataLength_': parametro formale senza riferimenti
+\\Mac\AURELIA\TESI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_LIB\software\ANTFS\antfs_host_channel.cpp(5703,28): warning C4458:  se si dichiara 'ucChannelStatus', il membro della classe verrà nascosto
+  dsi_ant_device.cpp
+  dsi_cm_library.cpp
+  dsi_ant_device_polling.cpp
+  dsi_debug.cpp
+  dsi_framer.cpp
+  dsi_framer_ant.cpp
+  dsi_framer_integrated_antfs_client.cpp
+  dsi_libusb_library.cpp
+  dsi_serial.cpp
+  dsi_serial_generic.cpp
+  dsi_serial_libusb.cpp
+  dsi_serial_si.cpp
+  dsi_serial_vcp.cpp
+  dsi_silabs_library.cpp
+  dsi_timer.cpp
+  usb_device.cpp
+  usb_device_handle_libusb.cpp
+  Compilazione in corso...
+  usb_device_handle_si.cpp
+  usb_device_handle_win.cpp
+  usb_device_libusb.cpp
+  usb_device_si.cpp
+  WinDevice.cpp
+\\Mac\AURELIA\TESI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_LIB\software\ANTFS\antfs_host_channel.hpp(138,13): message :  vedere la dichiarazione di 'ANTFSHostChannel::ucChannelStatus'
+  antfs_directory.c
+  checksum.c
+  crc.c
+  dsi_convert.c
+  dsi_thread_win32.c
+  macros.c
+\\Mac\AURELIA\TESI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_LIB\software\system\macros.c(45,17): warning C4245:  'return': conversione da 'int' a 'size_t'. Errore di corrispondenza tra signed e unsigned.
+  ANT_Lib.vcxproj -> \\Mac\AURELIA\TESI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Release\ANT_LIB.lib
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(138,5): error MSB3073: uscita dal comando "xcopy "\\Mac\AURELIA\TESI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_LIB\..\Bin\DSI_*.dll" "\\Mac\AURELIA\TESI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Release\" /d /i /r /y
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(138,5): error MSB3073: :VCEnd" con codice 4.

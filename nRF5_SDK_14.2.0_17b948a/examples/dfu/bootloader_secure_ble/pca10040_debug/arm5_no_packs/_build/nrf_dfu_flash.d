@@ -1,0 +1,10 @@
+.\_build\nrf_dfu_flash.o: ..\..\..\..\..\components\libraries\bootloader\dfu\nrf_dfu_flash.c
+.\_build\nrf_dfu_flash.o: ..\..\..\..\..\components\libraries\bootloader\dfu\nrf_dfu_flash.h
+.\_build\nrf_dfu_flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\_build\nrf_dfu_flash.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\_build\nrf_dfu_flash.o: ..\..\..\..\..\components\libraries\fstorage\nrf_fstorage.h
+.\_build\nrf_dfu_flash.o: ..\..\..\..\..\components\libraries\util\sdk_errors.h
+.\_build\nrf_dfu_flash.o: ..\..\..\..\..\components\softdevice\s132\headers\nrf_error.h
+.\_build\nrf_dfu_flash.o: ..\config\sdk_config.h
+.\_build\nrf_dfu_flash.o: ..\..\..\..\..\components\libraries\experimental_section_vars\nrf_section.h
+.\_build\nrf_dfu_flash.o: ..\..\..\..\..\components\libraries\util\nordic_common.h
