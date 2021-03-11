@@ -33,6 +33,8 @@
 #define TIMEOUT_VALUE 25000                          /**< 25 mseconds timer time-out value. */
 
 #define DEVICENUMBER 1     //1, 2 o 3
+//Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
+//I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 
 int count=0, stato=0, i=0;
 float deltat=0.025;
@@ -100,7 +102,7 @@ void icm_init(void)
 		// Initiate ICM driver
 		ret_code = app_icm_init();
 		APP_ERROR_CHECK(ret_code); // Check for errors in return value
-	
+
 		ICM20948_reset();
 	
 		ICM20948_selectAutoClockSource();
@@ -358,11 +360,11 @@ int main(void)
 	  utils_setup();
     softdevice_setup();
     ant_channel_rx_broadcast_setup();
-  
+
     // Initialize.
    
-	//	NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
-//    NRF_POWER->DCDCEN = 1;
+		//NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
+  //    NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
     icm_init();
 		
     saadc_init();
