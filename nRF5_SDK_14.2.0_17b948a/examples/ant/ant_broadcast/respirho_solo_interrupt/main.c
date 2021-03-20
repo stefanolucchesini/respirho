@@ -32,7 +32,7 @@
 #define SAADC_CHANNEL 0     //Pin A0 (sarebbe il 2)
 #define TIMEOUT_VALUE 25000                          /**< 25 mseconds timer time-out value. */
 
-#define DEVICENUMBER 1     //1, 2 o 3
+#define DEVICENUMBER 2     //1, 2 o 3
 //Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 
@@ -372,6 +372,7 @@ int main(void)
 	
     // Start execution  
 		NRF_LOG_INFO("Dispositivo RESPIRHO' numero %d", DEVICENUMBER);
+	  NRF_LOG_INFO("Stato magnetometro: %d", MAGNETOMETRO_ABILITATO);
 	
 		
 //	  static uint8_t                  m_channel_number=0; 
