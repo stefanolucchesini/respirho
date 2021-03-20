@@ -30,11 +30,19 @@ Build target 'nrf52832_xxaa'
 compiling main.c...
 ..\..\..\..\..\..\nrf5-mpu-examples-master\nrf_drv_mpu.h(15): warning:  #1215-D: #warning directive: "INFO: The MPU is using TWI drivers."
   #warning "INFO: The MPU is using TWI drivers."
-..\..\..\main.c: 1 warning, 0 errors
+..\..\..\main.c(414): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  							mx_bias = mx_bias*0.15;
+..\..\..\main.c(416): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  							my_bias = my_bias*0.15;
+..\..\..\main.c(418): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  							mz_bias = mz_bias*0.15;
+..\..\..\main.c(425): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  							avg_rad = avg_rad/ 3.0;
+..\..\..\main.c: 5 warnings, 0 errors
 linking...
-Program Size: Code=29176 RO-data=1700 RW-data=460 ZI-data=10340  
+Program Size: Code=29208 RO-data=1700 RW-data=508 ZI-data=10340  
 FromELF: creating hex file...
-".\_build\nrf52832_xxaa.axf" - 0 Error(s), 1 Warning(s).
+".\_build\nrf52832_xxaa.axf" - 0 Error(s), 5 Warning(s).
 
 <h2>Software Packages used:</h2>
 

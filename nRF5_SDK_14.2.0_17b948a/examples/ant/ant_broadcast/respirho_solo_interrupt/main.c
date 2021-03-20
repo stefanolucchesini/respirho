@@ -37,11 +37,13 @@
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 
 int count=0, stato=0, i=0;
-float deltat=0.025;
-float mx;
-float my;
-float mz;
+float deltat = 0.025;
+float mx, my, mz;
 float quat[4];
+float mx_bias = +15.6000004, my_bias = -12.1499996, mz_bias = -11.6999998;  //valori default di calibrazione magnetometro, vengono cambiati da calibrazione automatica
+float x_scale = 1.02588999, y_scale = 0.990625024, z_scale = 0.984472036;   //valori default di calibrazione magnetometro, vengono cambiati da calibrazione automatica
+float acc_bias_x = 0.00258519663, acc_bias_y = -0.00990874227, acc_bias_z = -0.01995349; //valori default di calibrazione accelerometro, vengono cambiati da calibrazione automatica
+float gyro_bias_x = 0.0176442917, gyro_bias_y = -0.0170090254, gyro_bias_z = +0.00491240807; //valori default di calibrazione giroscopio, vengono cambiati da calibrazione automatica
 
 int notshown = 1; // per il log
 
@@ -75,12 +77,6 @@ void saadc_init(void)
     APP_ERROR_CHECK(err_code);
 }
 
-/**@brief Function for handling a ANT stack event.
- *
- * @param[in] p_ant_evt  ANT stack event.
- * @param[in] p_context  Context.
- */
- 
  
 static void log_init(void)
 {
@@ -280,47 +276,32 @@ void timeout_handler(void * p_context)
 							err_code = app_icm_read_accel(&acc_values);
 							APP_ERROR_CHECK(err_code);
 						
-							//Sensitivity 2G
-//							acc.x=((acc_values.x)/16384.)-0.0384667963;
-//							acc.y=((acc_values.y)/16384.)-0.0059826239;
-//							acc.z=((acc_values.z)/16384.)-0.0222609;
 							//Sensitivity 4G
-							acc.x=((acc_values.x)/4096.)+0.00258519663;
-							acc.y=((acc_values.y)/4096.)-0.00990874227;
-							acc.z=((acc_values.z)/4096.)-0.01995349;
+							acc.x=((acc_values.x)/4096.)+acc_bias_x;
+							acc.y=((acc_values.y)/4096.)+acc_bias_y;
+							acc.z=((acc_values.z)/4096.)+acc_bias_z;
 							if( acc_values.x == 0 && acc_values.y == 0 && acc_values.z == 0 ) nrf_gpio_pin_set(LED);
-//							acc.x=((acc_values.x)/2048.);
-//							acc.y=((acc_values.y)/2048.);
-//							acc.z=((acc_values.z)/2048.);
+
 							
 							//Gyroscope data read
 							err_code = app_icm_read_gyro(&gyro_values);
 							APP_ERROR_CHECK(err_code);			
 							//sensitivity 500 dps	
-							gyro.x=(gyro_values.x/65.54)*PI/180.0f+0.0176442917;
-							gyro.y=(gyro_values.y/65.54)*PI/180.0f-0.0170090254;
-							gyro.z=(gyro_values.z/65.54)*PI/180.0f+0.00491240807;
+							gyro.x=(gyro_values.x/65.54)*PI/180.0f+gyro_bias_x;
+							gyro.y=(gyro_values.y/65.54)*PI/180.0f+gyro_bias_y;
+							gyro.z=(gyro_values.z/65.54)*PI/180.0f+gyro_bias_z;
 							if( gyro_values.x == 0 && gyro_values.y == 0 && gyro_values.z == 0 ) nrf_gpio_pin_set(LED);
-							//sensitivity 2000 dps	
-//							gyro.x=(gyro_values.x/16.4)*PI/180.0f+0.13899231;
-//							gyro.y=(gyro_values.y/16.4)*PI/180.0f-0.182615861;
-//							gyro.z=(gyro_values.z/16.4)*PI/180.0f+0.0688171238;
-//							gyro.x=(gyro_values.x/16.4)*PI/180.0f;
-//							gyro.y=(gyro_values.y/16.4)*PI/180.0f;
-//							gyro.z=(gyro_values.z/16.4)*PI/180.0f;
+							
 							
 							//Magnetometer data read
 							if(MAGNETOMETRO_ABILITATO){
 							
 							err_code = app_icm_read_magnetometer(&magn_values, NULL);
 							APP_ERROR_CHECK(err_code);
-							mx=(((magn_values.x)*0.15)+15.6000004)*1.02588999;
-							my=(((magn_values.y)*0.15)-12.1499996)*0.990625024;
-							mz=(((magn_values.z)*0.15)-11.6999998)*0.984472036;
+							mx=(((magn_values.x)*0.15)+mx_bias)*x_scale;
+							my=(((magn_values.y)*0.15)+my_bias)*y_scale;
+							mz=(((magn_values.z)*0.15)+mz_bias)*z_scale;
 							if( magn_values.x == 0 && magn_values.y == 0 && magn_values.z == 0 ) nrf_gpio_pin_set(LED);
-//							mx=((magn_values.x)*0.15);
-//							my=((magn_values.y)*0.15);
-//							mz=((magn_values.z)*0.15);
 							
 							}
 			
@@ -329,7 +310,6 @@ void timeout_handler(void * p_context)
 							
 							
 							MadgwickQuaternionUpdate(acc.x, acc.y, acc.z,gyro.x, gyro.y, gyro.z, mx, my, mz,deltat);
-//							MadgwickQuaternionUpdate(0.002,0.002, 0.95,0.01, 0.01, 0.01,50.1, 100.2, 75.3,deltat);
 							quat[0]=q[0]*127;
 							quat[1]=q[1]*127;
 							quat[2]=q[2]*127;
@@ -344,10 +324,110 @@ if(stato == 1 && i == 0) {
 	NRF_LOG_INFO("Count: %d", count);
 	count++;
 	nrf_gpio_pin_clear(LED);
-}
-					
+	}
 
-										                  
+}
+
+void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
+	int16_t max_x;
+	int16_t min_x;
+	int16_t max_y;
+	int16_t min_y;
+	int16_t max_z;
+	int16_t min_z; 
+	int step = 0;
+	acc_bias_x = 0, acc_bias_y = 0, acc_bias_z = 0; 
+  gyro_bias_x = 0, gyro_bias_y = 0, gyro_bias_z = 0;
+	
+						while (step<1450)  //36 secondi di calibrazione
+						{
+							//accelerometro
+							err_code = app_icm_read_accel(&acc_values);
+							APP_ERROR_CHECK(err_code);
+							acc_bias_x=(acc_values.x/16384.)+acc_bias_x;
+							acc_bias_y=(acc_values.y/16384.)+acc_bias_y;
+							acc_bias_z=(acc_values.z/16384.)+acc_bias_z;
+							
+							//giroscopio
+							err_code = app_icm_read_gyro(&gyro_values);
+							APP_ERROR_CHECK(err_code);
+							gyro_bias_x=((gyro_values.x/65.54)*PI/180.0f)+gyro_bias_x;
+							gyro_bias_y=((gyro_values.y/65.54)*PI/180.0f)+gyro_bias_y;
+							gyro_bias_z=((gyro_values.z/65.54)*PI/180.0f)+gyro_bias_z;
+							
+							//magnetometro
+							err_code = app_icm_read_magnetometer(&magn_values, NULL);
+							APP_ERROR_CHECK(err_code);
+							if (step == 0)
+							{
+										max_x = magn_values.x;
+										min_x = magn_values.x;
+										max_y = magn_values.y;
+										min_y = magn_values.y;
+										max_z = magn_values.z;
+										min_z = magn_values.z;								
+							}
+							else
+							{
+								if (magn_values.x > max_x)
+								{
+									max_x = magn_values.x;
+								}
+								else if (magn_values.x < min_x)
+								{
+									min_x = magn_values.x;
+								}
+								
+								if (magn_values.y > max_y)
+								{
+									max_y = magn_values.y;
+								}
+								else if (magn_values.y < min_y)
+								{
+									min_y = magn_values.y;
+								}
+								
+								if (magn_values.z > max_z)
+								{
+									max_z = magn_values.z;
+								}
+								else if (magn_values.z < min_z)
+								{
+									min_z = magn_values.z;
+								}
+							}
+							
+							step++;
+							nrf_gpio_pin_toggle(LED);
+							nrf_delay_ms(25);
+					}
+						
+						  acc_bias_x=acc_bias_x/1450;
+							acc_bias_y=acc_bias_y/1450;
+							acc_bias_z=acc_bias_z/1450;
+							
+							gyro_bias_x=gyro_bias_x/1450;
+							gyro_bias_y=gyro_bias_y/1450;
+							gyro_bias_z=gyro_bias_z/1450;  
+					 
+			        mx_bias = (max_x + min_x)/2;
+							mx_bias = mx_bias*0.15;
+							my_bias = (max_y + min_y)/2;
+							my_bias = my_bias*0.15;
+							mz_bias = (max_z + min_z)/2;
+							mz_bias = mz_bias*0.15;
+							
+							float mx_scale = (max_x - min_x)/2;
+							float my_scale = (max_y - min_y)/2;
+							float mz_scale = (max_z - min_z)/2;
+							
+							float avg_rad = mx_scale + my_scale + mz_scale;
+							avg_rad = avg_rad/ 3.0;
+							
+							x_scale = avg_rad/mx_scale;
+							y_scale = avg_rad/my_scale;
+							z_scale = avg_rad/mz_scale;			
+	
 }
 
 int main(void)
