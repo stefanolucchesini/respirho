@@ -44,6 +44,7 @@ float mx_bias = +15.6000004, my_bias = -12.1499996, mz_bias = -11.6999998;  //va
 float x_scale = 1.02588999, y_scale = 0.990625024, z_scale = 0.984472036;   //valori default di calibrazione magnetometro, vengono cambiati da calibrazione automatica
 float acc_bias_x = 0.00258519663, acc_bias_y = -0.00990874227, acc_bias_z = -0.01995349; //valori default di calibrazione accelerometro, vengono cambiati da calibrazione automatica
 float gyro_bias_x = 0.0176442917, gyro_bias_y = -0.0170090254, gyro_bias_z = +0.00491240807; //valori default di calibrazione giroscopio, vengono cambiati da calibrazione automatica
+void calibrazione(void);
 
 int notshown = 1; // per il log
 
@@ -187,6 +188,7 @@ void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
 									{ 									
 											stato=0;									  //ferma l'acquisizione												
 											nrf_gpio_pin_set(LED);
+											calibrazione();
 									}
 									 if (p_ant_evt->message.ANT_MESSAGE_aucPayload [0x00] == 0x00 && p_ant_evt->message.ANT_MESSAGE_aucPayload [0x07] != 0x80)   //se il primo byte del payload è zero avvia l'acquisizione
 									  {  		 										
@@ -339,22 +341,8 @@ void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
 	acc_bias_x = 0, acc_bias_y = 0, acc_bias_z = 0; 
   gyro_bias_x = 0, gyro_bias_y = 0, gyro_bias_z = 0;
 	
-						while (step<1450)  //36 secondi di calibrazione
+						while (step<1450)  //36 secondi di calibrazione (solo magnetometro, muovere a 8)
 						{
-							//accelerometro
-							err_code = app_icm_read_accel(&acc_values);
-							APP_ERROR_CHECK(err_code);
-							acc_bias_x=(acc_values.x/16384.)+acc_bias_x;
-							acc_bias_y=(acc_values.y/16384.)+acc_bias_y;
-							acc_bias_z=(acc_values.z/16384.)+acc_bias_z;
-							
-							//giroscopio
-							err_code = app_icm_read_gyro(&gyro_values);
-							APP_ERROR_CHECK(err_code);
-							gyro_bias_x=((gyro_values.x/65.54)*PI/180.0f)+gyro_bias_x;
-							gyro_bias_y=((gyro_values.y/65.54)*PI/180.0f)+gyro_bias_y;
-							gyro_bias_z=((gyro_values.z/65.54)*PI/180.0f)+gyro_bias_z;
-							
 							//magnetometro
 							err_code = app_icm_read_magnetometer(&magn_values, NULL);
 							APP_ERROR_CHECK(err_code);
@@ -400,15 +388,7 @@ void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
 							step++;
 							nrf_gpio_pin_toggle(LED);
 							nrf_delay_ms(25);
-					}
-						
-						  acc_bias_x=acc_bias_x/1450;
-							acc_bias_y=acc_bias_y/1450;
-							acc_bias_z=acc_bias_z/1450;
-							
-							gyro_bias_x=gyro_bias_x/1450;
-							gyro_bias_y=gyro_bias_y/1450;
-							gyro_bias_z=gyro_bias_z/1450;  
+					} 
 					 
 			        mx_bias = (max_x + min_x)/2;
 							mx_bias = mx_bias*0.15;
@@ -426,8 +406,37 @@ void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
 							
 							x_scale = avg_rad/mx_scale;
 							y_scale = avg_rad/my_scale;
-							z_scale = avg_rad/mz_scale;			
-	
+							z_scale = avg_rad/mz_scale;		
+							step = 0; 
+					
+						while(step<1450){
+					    //accelerometro
+							err_code = app_icm_read_accel(&acc_values);
+							APP_ERROR_CHECK(err_code);
+							acc_bias_x=(acc_values.x/16384.)+acc_bias_x;
+							acc_bias_y=(acc_values.y/16384.)+acc_bias_y;
+							acc_bias_z=(acc_values.z/16384.)+acc_bias_z;
+							
+							//giroscopio
+							err_code = app_icm_read_gyro(&gyro_values);
+							APP_ERROR_CHECK(err_code);
+							gyro_bias_x=((gyro_values.x/65.54)*PI/180.0f)+gyro_bias_x;
+							gyro_bias_y=((gyro_values.y/65.54)*PI/180.0f)+gyro_bias_y;
+							gyro_bias_z=((gyro_values.z/65.54)*PI/180.0f)+gyro_bias_z;
+							
+							step++;
+							nrf_gpio_pin_set(LED);
+							nrf_delay_ms(25);
+						}
+						  
+						  acc_bias_x=acc_bias_x/1450;
+							acc_bias_y=acc_bias_y/1450;
+							acc_bias_z=acc_bias_z/1450;
+							
+							gyro_bias_x=gyro_bias_x/1450;
+							gyro_bias_y=gyro_bias_y/1450;
+							gyro_bias_z=gyro_bias_z/1450; 	
+							nrf_gpio_pin_clear(LED);
 }
 
 int main(void)
