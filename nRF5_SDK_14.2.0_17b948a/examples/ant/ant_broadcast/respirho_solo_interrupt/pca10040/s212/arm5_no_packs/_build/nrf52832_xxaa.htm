@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\_build\nrf52832_xxaa.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\_build\nrf52832_xxaa.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sat Mar 20 12:01:20 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue Mar 23 11:29:53 2021
 <BR><P>
 <H3>Maximum Stack Usage =        416 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -714,7 +714,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ant_channel_rx_broadcast_setup
 </UL>
 
-<P><STRONG><a name="[43]"></a>ant_evt_handler</STRONG> (Thumb, 88 bytes, Stack size 16 bytes, main.o(i.ant_evt_handler))
+<P><STRONG><a name="[43]"></a>ant_evt_handler</STRONG> (Thumb, 96 bytes, Stack size 16 bytes, main.o(i.ant_evt_handler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = ant_evt_handler
 </UL>
 <BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nrf_gpio_pin_set
@@ -963,9 +963,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nrf_gpio_pin_write
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;leds_off
-<LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_led_indication
+<BR>[Called By]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_led_indication
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_leds_off
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;leds_off
 </UL>
 
 <P><STRONG><a name="[c5]"></a>bsp_board_led_on</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, boards.o(i.bsp_board_led_on))
@@ -997,8 +997,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_led_off
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;leds_off
-<LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_leds_init
+<BR>[Called By]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_leds_init
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;leds_off
 </UL>
 
 <P><STRONG><a name="[c9]"></a>bsp_board_leds_on</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, boards.o(i.bsp_board_leds_on))
@@ -1436,9 +1436,9 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nrf_memobj_read
 <LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nrf_memobj_put
 <LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nrf_memobj_get
-<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nrf_log_std_entry_process
 <LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nrf_log_hexdump_entry_process
+<LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nrf_log_backend_uart_put
 </UL>
@@ -1821,14 +1821,14 @@ Local Symbols
 <P><STRONG><a name="[cd]"></a>bsp_led_indication</STRONG> (Thumb, 872 bytes, Stack size 32 bytes, bsp.o(i.bsp_led_indication))
 <BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = bsp_led_indication &rArr; app_timer_start &rArr; timer_start_op_schedule &rArr; app_util_critical_region_enter &rArr; sd_nvic_critical_region_enter
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;leds_off
-<LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_leds_on
+<BR>[Calls]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_leds_on
 <LI><a href="#[cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_led_state_get
 <LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_led_on
 <LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_led_off
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;bsp_board_led_invert
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_timer_stop
 <LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_timer_start
+<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;leds_off
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
 </UL>
 <BR>[Called By]<UL><LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;leds_timer_handler

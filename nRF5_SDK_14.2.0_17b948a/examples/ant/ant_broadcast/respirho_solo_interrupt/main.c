@@ -44,6 +44,7 @@ float mx_bias = +15.6000004, my_bias = -12.1499996, mz_bias = -11.6999998;  //va
 float x_scale = 1.02588999, y_scale = 0.990625024, z_scale = 0.984472036;   //valori default di calibrazione magnetometro, vengono cambiati da calibrazione automatica
 float acc_bias_x = 0.00258519663, acc_bias_y = -0.00990874227, acc_bias_z = -0.01995349; //valori default di calibrazione accelerometro, vengono cambiati da calibrazione automatica
 float gyro_bias_x = 0.0176442917, gyro_bias_y = -0.0170090254, gyro_bias_z = +0.00491240807; //valori default di calibrazione giroscopio, vengono cambiati da calibrazione automatica
+void calibrazione(void);
 
 int notshown = 1; // per il log
 
@@ -187,13 +188,15 @@ void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
 									{ 									
 											stato=0;									  //ferma l'acquisizione												
 											nrf_gpio_pin_set(LED);
+											uint8_t *  	pucSuccess;
+										  sd_ant_pending_transmit_clear( BROADCAST_CHANNEL_NUMBER,	pucSuccess );	 //svuota il buffer di qualsiasi vecchio messaggio ancora da inviare
 									}
 									 if (p_ant_evt->message.ANT_MESSAGE_aucPayload [0x00] == 0x00 && p_ant_evt->message.ANT_MESSAGE_aucPayload [0x07] != 0x80)   //se il primo byte del payload è zero avvia l'acquisizione
 									  {  		 										
 										 nrf_gpio_pin_clear(LED);
-										 count=0;
-										 i=0;
-										 stato = 1;
+										count=0;
+										i=0;
+										stato = 1;
 								    }
 				
                 }
@@ -338,8 +341,8 @@ void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
 	int step = 0;
 	acc_bias_x = 0, acc_bias_y = 0, acc_bias_z = 0; 
   gyro_bias_x = 0, gyro_bias_y = 0, gyro_bias_z = 0;
-	
-						while (step<1450)  //36 secondi di calibrazione
+	          NRF_LOG_INFO("Calibrazione accelerometro e giroscopio");
+						while (step<1450)  //36 secondi di calibrazione. Unità deve restare immobile
 						{
 							//accelerometro
 							err_code = app_icm_read_accel(&acc_values);
@@ -355,7 +358,23 @@ void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
 							gyro_bias_y=((gyro_values.y/65.54)*PI/180.0f)+gyro_bias_y;
 							gyro_bias_z=((gyro_values.z/65.54)*PI/180.0f)+gyro_bias_z;
 							
-							//magnetometro
+							step++;
+							nrf_gpio_pin_toggle(LED);
+							nrf_delay_ms(25);
+					}
+						
+						  acc_bias_x=acc_bias_x/1450;
+							acc_bias_y=acc_bias_y/1450;
+							acc_bias_z=acc_bias_z/1450;
+							
+							gyro_bias_x=gyro_bias_x/1450;
+							gyro_bias_y=gyro_bias_y/1450;
+							gyro_bias_z=gyro_bias_z/1450;  
+	step = 0;				
+	//CALIBRAZIONE MAGNETOMETRO, muovere unità nello spazio per 30 secondi
+	nrf_gpio_pin_set(LED);
+	while(step<1450){
+							
 							err_code = app_icm_read_magnetometer(&magn_values, NULL);
 							APP_ERROR_CHECK(err_code);
 							if (step == 0)
@@ -396,38 +415,28 @@ void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
 									min_z = magn_values.z;
 								}
 							}
-							
 							step++;
-							nrf_gpio_pin_toggle(LED);
 							nrf_delay_ms(25);
-					}
 						
-						  acc_bias_x=acc_bias_x/1450;
-							acc_bias_y=acc_bias_y/1450;
-							acc_bias_z=acc_bias_z/1450;
+		}
+				 mx_bias = (max_x + min_x)/2;
+				 mx_bias = mx_bias*0.15;
+				 my_bias = (max_y + min_y)/2;
+				 my_bias = my_bias*0.15;
+				 mz_bias = (max_z + min_z)/2;
+				 mz_bias = mz_bias*0.15;
 							
-							gyro_bias_x=gyro_bias_x/1450;
-							gyro_bias_y=gyro_bias_y/1450;
-							gyro_bias_z=gyro_bias_z/1450;  
-					 
-			        mx_bias = (max_x + min_x)/2;
-							mx_bias = mx_bias*0.15;
-							my_bias = (max_y + min_y)/2;
-							my_bias = my_bias*0.15;
-							mz_bias = (max_z + min_z)/2;
-							mz_bias = mz_bias*0.15;
+				float mx_scale = (max_x - min_x)/2;
+				float my_scale = (max_y - min_y)/2;
+				float mz_scale = (max_z - min_z)/2;
 							
-							float mx_scale = (max_x - min_x)/2;
-							float my_scale = (max_y - min_y)/2;
-							float mz_scale = (max_z - min_z)/2;
-							
-							float avg_rad = mx_scale + my_scale + mz_scale;
-							avg_rad = avg_rad/ 3.0;
-							
-							x_scale = avg_rad/mx_scale;
-							y_scale = avg_rad/my_scale;
-							z_scale = avg_rad/mz_scale;			
-	
+  			float avg_rad = mx_scale + my_scale + mz_scale;
+				avg_rad = avg_rad/ 3.0;
+    		x_scale = avg_rad/mx_scale;
+				y_scale = avg_rad/my_scale;
+				z_scale = avg_rad/mz_scale;	
+		
+		nrf_gpio_pin_clear(LED);
 }
 
 int main(void)
@@ -446,7 +455,6 @@ int main(void)
 		//NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
   //    NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
     icm_init();
-		
     saadc_init();
 
 	
@@ -470,7 +478,6 @@ int main(void)
     APP_ERROR_CHECK(err_code);				
 		
 		nrf_gpio_pin_clear(LED);
-		
     // Main loop.
     while (1)
     {
