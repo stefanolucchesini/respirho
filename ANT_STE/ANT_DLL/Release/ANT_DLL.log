@@ -1,7 +1,0 @@
-﻿  ant.cpp
-     Creating library C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_DLL.lib and object C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_DLL.exp
-  Generating code
-  Previous IPDB not found, fall back to full compilation.
-  All 1023 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  ANT_DLL.vcxproj -> C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_DLL.dll

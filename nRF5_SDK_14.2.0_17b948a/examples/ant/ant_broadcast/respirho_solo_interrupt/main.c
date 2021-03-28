@@ -26,13 +26,12 @@
 #include "app_simple_timer.h"
 
 
-
 #define APP_ANT_OBSERVER_PRIO   1    /**< Application's ANT observer priority. You shouldn't need to modify this value. */
 #define LED 11
 #define SAADC_CHANNEL 0     //Pin A0 (sarebbe il 2)
 #define TIMEOUT_VALUE 25000                          /**< 25 mseconds timer time-out value. */
 
-#define DEVICENUMBER 2     //1, 2 o 3
+#define DEVICENUMBER 3     //1, 2 o 3
 //Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 
@@ -54,13 +53,12 @@ gyro_values_t gyro_values;
 accel_values_float_t acc;
 gyro_values_float_t gyro;
 nrf_saadc_value_t sample;
-ret_code_t err_code;		
+ret_code_t err_code;	
 
 void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
 {
 	
 }
-
 
 /**
  * @brief Function for confguring SAADC channel 0 for sampling AIN0 (P0.02).
@@ -449,15 +447,13 @@ int main(void)
 	  utils_setup();
     softdevice_setup();
     ant_channel_rx_broadcast_setup();
-
-    // Initialize.
-   
+    // Initialize
 		//NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
-  //    NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
+    //    NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
     icm_init();
     saadc_init();
 
-	
+
     // Start execution  
 		NRF_LOG_INFO("Dispositivo RESPIRHO' numero %d", DEVICENUMBER);
 	  NRF_LOG_INFO("Stato magnetometro: %d", MAGNETOMETRO_ABILITATO);

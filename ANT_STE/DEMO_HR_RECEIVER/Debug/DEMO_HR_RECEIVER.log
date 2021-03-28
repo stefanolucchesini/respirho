@@ -1,8 +1,0 @@
-﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  demo_hr_receiver.cpp
-C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_HR_RECEIVER\demo_hr_receiver.cpp(122,18): warning C4477: 'sscanf' : format string '%u' requires an argument of type 'unsigned int *', but variadic argument 1 has type 'UCHAR *'
-C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_HR_RECEIVER\demo_hr_receiver.cpp(122,18): message : consider using '%hhu' in the format string
-C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_HR_RECEIVER\demo_hr_receiver.cpp(122,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_HR_RECEIVER\demo_hr_receiver.cpp(304,10): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-demo_hr_receiver.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
-  DEMO_HR_RECEIVER.vcxproj -> C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\Debug\DEMO_HR_RECEIVER.exe
