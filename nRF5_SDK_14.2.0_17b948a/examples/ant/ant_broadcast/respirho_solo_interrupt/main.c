@@ -32,19 +32,24 @@
 #define SAADC_CHANNEL 0     //Pin A0 (sarebbe il 2)
 #define TIMEOUT_VALUE 25000                          /**< 25 mseconds timer time-out value. */
 
-#define DEVICENUMBER 1     //1, 2 o 3
+#define DEVICENUMBER 3     //1, 2 o 3
 //Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 
-int count=0, stato=0, i=0;
-float deltat=0.025;
-float mx;
-float my;
-float mz;
+int count=0, stato=0, i=0, flag_cal = 0;
+float deltat = 0.025;
+float mx, my, mz;
 float quat[4];
+
+//Valori default di calibrazione
+float magnetometer_bias[] = {+15.6000004, -12.1499996, -11.6999998};  // X, Y, Z
+float magnetometer_scale[] = {1.02588999, 0.990625024, 0.984472036};   //X, Y, Z
+float acc_bias[] = {0.00258519663, -0.00990874227, -0.01995349}; //X, Y, Z
+float gyro_bias[] = {0.0176442917, -0.0170090254, +0.00491240807}; //X, Y, Z
 
 int notshown = 1; // per il log
 
+//Definizione variabili che conterranno i valori letti dall'IMU
 accel_values_t acc_values;
 magn_values_t magn_values;
 gyro_values_t gyro_values;
@@ -74,14 +79,7 @@ void saadc_init(void)
     err_code = nrf_drv_saadc_channel_init(SAADC_CHANNEL, &channel_config);
     APP_ERROR_CHECK(err_code);
 }
-
-/**@brief Function for handling a ANT stack event.
- *
- * @param[in] p_ant_evt  ANT stack event.
- * @param[in] p_context  Context.
- */
- 
- 
+  
 static void log_init(void)
 {
     ret_code_t err_code = NRF_LOG_INIT(NULL);
@@ -91,7 +89,7 @@ static void log_init(void)
 }
 
 
-//IMU
+//Inizializzazione IMU
 void icm_init(void)
 {
 	
@@ -132,7 +130,118 @@ void icm_init(void)
     }
 }
 
+void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
+	flag_cal = 1; //dice agli interrupt che la calibrazione è in corso
+	int16_t max_x;
+	int16_t min_x;
+	int16_t max_y;
+	int16_t min_y;
+	int16_t max_z;
+	int16_t min_z; 
+	int step = 0;
+	for(int c = 0; c<3; c++){  //azzera valori di default
+	acc_bias[c] = 0; 
+  gyro_bias[c] = 0;
+	}
+						while (step<1450)  //36 secondi di calibrazione, tenere tutto fermo
+						{
+							//accelerometro
+							err_code = app_icm_read_accel(&acc_values);
+							APP_ERROR_CHECK(err_code);
+							acc_bias[0]=(acc_values.x/16384.)+acc_bias[0];
+							acc_bias[1]=(acc_values.y/16384.)+acc_bias[1];
+							acc_bias[2]=(acc_values.z/16384.)+acc_bias[2];
 
+							//giroscopio
+							err_code = app_icm_read_gyro(&gyro_values);
+							APP_ERROR_CHECK(err_code);
+							gyro_bias[0]=((gyro_values.x/65.54)*PI/180.0f)+gyro_bias[0];
+							gyro_bias[1]=((gyro_values.y/65.54)*PI/180.0f)+gyro_bias[1];
+							gyro_bias[2]=((gyro_values.z/65.54)*PI/180.0f)+gyro_bias[2];
+
+							step++;
+							nrf_gpio_pin_toggle(LED);
+							nrf_delay_ms(25);
+					}
+							nrf_gpio_pin_clear(LED);
+						  acc_bias[0]=acc_bias[0]/1450;
+							acc_bias[1]=acc_bias[1]/1450;
+							acc_bias[2]=acc_bias[2]/1450;
+
+							gyro_bias[0]=gyro_bias[0]/1450;
+							gyro_bias[1]=gyro_bias[1]/1450;
+							gyro_bias[2]=gyro_bias[2]/1450;  
+
+step = 0;			        
+nrf_gpio_pin_set(LED);							
+							while(step<1450){ //36 secondi di calibrazione, muovere nello spazio
+							//calib magnetometro 
+							
+							err_code = app_icm_read_magnetometer(&magn_values, NULL);
+							APP_ERROR_CHECK(err_code);
+							if (step == 0)
+							{
+										max_x = magn_values.x;
+										min_x = magn_values.x;
+										max_y = magn_values.y;
+										min_y = magn_values.y;
+										max_z = magn_values.z;
+										min_z = magn_values.z;								
+							}
+							else
+							{
+								if (magn_values.x > max_x)
+								{
+									max_x = magn_values.x;
+								}
+								else if (magn_values.x < min_x)
+								{
+									min_x = magn_values.x;
+								}
+
+								if (magn_values.y > max_y)
+								{
+									max_y = magn_values.y;
+								}
+								else if (magn_values.y < min_y)
+								{
+									min_y = magn_values.y;
+								}
+
+								if (magn_values.z > max_z)
+								{
+									max_z = magn_values.z;
+								}
+								else if (magn_values.z < min_z)
+								{
+									min_z = magn_values.z;
+								}
+							}
+						step++;
+						nrf_delay_ms(25);	
+						}
+							
+							magnetometer_bias[0] = (max_x + min_x)/2;
+							magnetometer_bias[0] = (double)magnetometer_bias[0]*0.15;
+							magnetometer_bias[1] = (max_y + min_y)/2;
+							magnetometer_bias[1] = (double)magnetometer_bias[1]*0.15;
+							magnetometer_bias[2] = (max_z + min_z)/2;
+							magnetometer_bias[2] = (double)magnetometer_bias[2]*0.15;
+
+							float mx_scale = (max_x - min_x)/2;
+							float my_scale = (max_y - min_y)/2;
+							float mz_scale = (max_z - min_z)/2;
+
+							float avg_rad = mx_scale + my_scale + mz_scale;
+							avg_rad = (double)avg_rad/ 3.0;
+
+							magnetometer_scale[0] = avg_rad/mx_scale;
+							magnetometer_scale[1] = avg_rad/my_scale;
+							magnetometer_scale[2] = avg_rad/mz_scale;	
+
+nrf_gpio_pin_clear(LED);						
+flag_cal = 0;						
+}							
 
 /* ANT functions*/
  void ant_message_send(void)
@@ -151,7 +260,7 @@ void icm_init(void)
     APP_ERROR_CHECK(err_code);
 
 }
-void ant_send(int campione, int quat1,int quat2, int quat3, int quat4, int counter)
+void ant_send(int campione, int counter, int quat1, int quat2, int quat3, int quat4)
 {
     uint8_t         message_payload[ANT_STANDARD_DATA_PAYLOAD_SIZE];
     
@@ -178,9 +287,8 @@ void ant_send(int campione, int quat1,int quat2, int quat3, int quat4, int count
 
 void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
 {
-    //ret_code_t err_code;
 
-    if (p_ant_evt->channel == BROADCAST_CHANNEL_NUMBER)
+    if (p_ant_evt->channel == BROADCAST_CHANNEL_NUMBER && !flag_cal)  //durante la calibrazione ignora tutti i messaggi che arrivano dal master
     {
         switch (p_ant_evt->event)
         {
@@ -191,9 +299,11 @@ void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
 									{ 									
 											stato=0;									  //ferma l'acquisizione												
 											nrf_gpio_pin_set(LED);
+										  //calibrazione(); bisogna creare un comando apposito!!
 									}
 									 if (p_ant_evt->message.ANT_MESSAGE_aucPayload [0x00] == 0x00 && p_ant_evt->message.ANT_MESSAGE_aucPayload [0x07] != 0x80)   //se il primo byte del payload è zero avvia l'acquisizione
-									  {  		 										
+									  {
+										 sd_ant_pending_transmit_clear (BROADCAST_CHANNEL_NUMBER, NULL); //svuota il buffer, utile per una seconda acquisizione
 										 nrf_gpio_pin_clear(LED);
 										 count=0;
 										 i=0;
@@ -208,7 +318,6 @@ void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
         }
     }
 }
-
 NRF_SDH_ANT_OBSERVER(m_ant_observer, APP_ANT_OBSERVER_PRIO, ant_evt_handler, NULL);
 
 /**@brief Function for the Timer and BSP initialization.
@@ -270,58 +379,38 @@ static void ant_channel_rx_broadcast_setup(void)
 }
 
 
-/**@brief Function for application main entry. Does not return.
- */
-
 void timeout_handler(void * p_context)
 { 
+	 if(flag_cal) return; //se la calibrazione è in corso non fa niente
 			        //ICM-20948
 							//Accelerometer data read
 							err_code = app_icm_read_accel(&acc_values);
 							APP_ERROR_CHECK(err_code);
 						
-							//Sensitivity 2G
-//							acc.x=((acc_values.x)/16384.)-0.0384667963;
-//							acc.y=((acc_values.y)/16384.)-0.0059826239;
-//							acc.z=((acc_values.z)/16384.)-0.0222609;
 							//Sensitivity 4G
-							acc.x=((acc_values.x)/4096.)+0.00258519663;
-							acc.y=((acc_values.y)/4096.)-0.00990874227;
-							acc.z=((acc_values.z)/4096.)-0.01995349;
+							acc.x=((acc_values.x)/4096.)+acc_bias[0];
+							acc.y=((acc_values.y)/4096.)+acc_bias[1];
+							acc.z=((acc_values.z)/4096.)+acc_bias[2];
 							if( acc_values.x == 0 && acc_values.y == 0 && acc_values.z == 0 ) nrf_gpio_pin_set(LED);
-//							acc.x=((acc_values.x)/2048.);
-//							acc.y=((acc_values.y)/2048.);
-//							acc.z=((acc_values.z)/2048.);
 							
 							//Gyroscope data read
 							err_code = app_icm_read_gyro(&gyro_values);
 							APP_ERROR_CHECK(err_code);			
 							//sensitivity 500 dps	
-							gyro.x=(gyro_values.x/65.54)*PI/180.0f+0.0176442917;
-							gyro.y=(gyro_values.y/65.54)*PI/180.0f-0.0170090254;
-							gyro.z=(gyro_values.z/65.54)*PI/180.0f+0.00491240807;
+						  gyro.x=(gyro_values.x/65.54)*PI/180.0f+gyro_bias[0];
+							gyro.y=(gyro_values.y/65.54)*PI/180.0f+gyro_bias[1];
+							gyro.z=(gyro_values.z/65.54)*PI/180.0f+gyro_bias[2];
 							if( gyro_values.x == 0 && gyro_values.y == 0 && gyro_values.z == 0 ) nrf_gpio_pin_set(LED);
-							//sensitivity 2000 dps	
-//							gyro.x=(gyro_values.x/16.4)*PI/180.0f+0.13899231;
-//							gyro.y=(gyro_values.y/16.4)*PI/180.0f-0.182615861;
-//							gyro.z=(gyro_values.z/16.4)*PI/180.0f+0.0688171238;
-//							gyro.x=(gyro_values.x/16.4)*PI/180.0f;
-//							gyro.y=(gyro_values.y/16.4)*PI/180.0f;
-//							gyro.z=(gyro_values.z/16.4)*PI/180.0f;
 							
 							//Magnetometer data read
 							if(MAGNETOMETRO_ABILITATO){
 							
 							err_code = app_icm_read_magnetometer(&magn_values, NULL);
 							APP_ERROR_CHECK(err_code);
-							mx=(((magn_values.x)*0.15)+15.6000004)*1.02588999;
-							my=(((magn_values.y)*0.15)-12.1499996)*0.990625024;
-							mz=(((magn_values.z)*0.15)-11.6999998)*0.984472036;
-							if( magn_values.x == 0 && magn_values.y == 0 && magn_values.z == 0 ) nrf_gpio_pin_set(LED);
-//							mx=((magn_values.x)*0.15);
-//							my=((magn_values.y)*0.15);
-//							mz=((magn_values.z)*0.15);
-							
+							mx=(((magn_values.x)*0.15)+magnetometer_bias[0])*magnetometer_scale[0];
+							my=(((magn_values.y)*0.15)+magnetometer_bias[1])*magnetometer_scale[1];
+							mz=(((magn_values.z)*0.15)+magnetometer_bias[2])*magnetometer_scale[2];
+							if( magn_values.x == 0 && magn_values.y == 0 && magn_values.z == 0 ) nrf_gpio_pin_set(LED);							
 							}
 			
 							err_code = nrf_drv_saadc_sample_convert(SAADC_CHANNEL, &sample);   //lettura ADC
@@ -329,7 +418,6 @@ void timeout_handler(void * p_context)
 							
 							
 							MadgwickQuaternionUpdate(acc.x, acc.y, acc.z,gyro.x, gyro.y, gyro.z, mx, my, mz,deltat);
-//							MadgwickQuaternionUpdate(0.002,0.002, 0.95,0.01, 0.01, 0.01,50.1, 100.2, 75.3,deltat);
 							quat[0]=q[0]*127;
 							quat[1]=q[1]*127;
 							quat[2]=q[2]*127;
@@ -339,15 +427,12 @@ void timeout_handler(void * p_context)
 						i++;
 						i = (i > 3) ? 0 : i; 
 					
-if(stato == 1 && i == 0) {
-	ant_send( sample, quat[0],quat[1],quat[2],quat[3], count);
+  if(stato == 1 && i == 0) {
+	ant_send( sample, count,quat[0] ,quat[1] ,quat[2] ,quat[3] );
 	NRF_LOG_INFO("Count: %d", count);
 	count++;
 	nrf_gpio_pin_clear(LED);
-}
-					
-
-										                  
+  }									                  
 }
 
 int main(void)
@@ -366,7 +451,6 @@ int main(void)
 		//NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
   //    NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
     icm_init();
-		
     saadc_init();
 
 	
@@ -377,7 +461,7 @@ int main(void)
 //	  static uint8_t                  m_channel_number=0; 
 	  uint8_t         message_addr[ANT_STANDARD_DATA_PAYLOAD_SIZE];
 	  memset(message_addr, DEVICENUMBER, ANT_STANDARD_DATA_PAYLOAD_SIZE);
-
+		sd_ant_channel_radio_tx_power_set 	(BROADCAST_CHANNEL_NUMBER, RADIO_TX_POWER_LVL_4, NULL); 	
 	  err_code = sd_ant_broadcast_message_tx(BROADCAST_CHANNEL_NUMBER,
                                                       ANT_STANDARD_DATA_PAYLOAD_SIZE,
                                                       message_addr);	
@@ -389,7 +473,6 @@ int main(void)
     APP_ERROR_CHECK(err_code);				
 		
 		nrf_gpio_pin_clear(LED);
-		
     // Main loop.
     while (1)
     {
