@@ -32,7 +32,7 @@
 #define SAADC_CHANNEL 0     //Pin A0 (sarebbe il 2)
 #define TIMEOUT_VALUE 25000                          /**< 25 mseconds timer time-out value. */
 
-#define DEVICENUMBER 3     //1, 2 o 3
+#define DEVICENUMBER 2     //1, 2 o 3
 //Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 
@@ -429,7 +429,7 @@ void timeout_handler(void * p_context)
 					
   if(stato == 1 && i == 0) {
 	ant_send( sample, count,quat[0] ,quat[1] ,quat[2] ,quat[3] );
-	NRF_LOG_INFO("Count: %d", count);
+	NRF_LOG_INFO("Messaggio numero %d inviato", count);
 	count++;
 	nrf_gpio_pin_clear(LED);
   }									                  

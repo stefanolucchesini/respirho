@@ -7,6 +7,7 @@ Copyright (c) Dynastream Innovations Inc. 2016
 All rights reserved.
 */
 #include "demo.h"
+#include "time.h"
 
 #include "types.h"
 #include "dsi_framer_ant.hpp"
@@ -55,8 +56,11 @@ All rights reserved.
 
 FILE* fp1;
 int stato = 0;
-//int stato1 = 0;
+int disp[] = {0, 0, 0}; //contiene il numero di campioni acquisiti dall'unità 1, 2 e 3
+int dispteo[] = {0, 0, 0}; //contiene il numero di campioni che le unità 1, 2, 3 avrebbero dovuto acquisire 
 int cont = 0;
+time_t start, end;
+double dif;
 
 int main(int argc, char** argv)
 {
@@ -243,6 +247,7 @@ void Demo::Start()
 		{
 			aucTransmitBuffer[7] = 128;
 			memset(aucTransmitBuffer, 0, ANT_STANDARD_DATA_PAYLOAD_SIZE-1);    //ferma la trasmissione dei quaternioni
+			time(&end);  //ferma il cronometro
 			stato = 0;
 			break;
 		}
@@ -268,6 +273,8 @@ void Demo::Start()
 		case 'g':
 		{
 			stato = 1;
+			for (int i = 0; i < 3; i++) { disp[i] = 0; dispteo[i] = 0; }
+			time(&start);  //fa partire il cronometro
 			break;
 		}
 		case 'M':
@@ -282,7 +289,11 @@ void Demo::Start()
 		{
 			// Quit
 			fclose(fp1); //chiude il file creato
-			//printf("Closing channel...\n");
+			for (int i = 0; i < 3; i++) printf("Numero campioni ricevuti dall'unita' %d: %d\n", i+1, disp[i]);
+			for (int i = 0; i < 3; i++) printf("Numero campioni teorici unita' %d: %d\n", i + 1, dispteo[i]);
+			dif = difftime(end, start);
+			printf("L'acquisizone e' durata %.2lf secondi\n", dif);
+			
 			printf("Vuoi fare una nuova acquisizione? (premi s e invio per Si, n e invio per No) \n");
 			bBroadcasting = FALSE;
 			
@@ -673,48 +684,16 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				}
 				if (stato == 1)
 				{
-					/*if (stato1 == 0)
-					{
-						if (cont4 < 4)
-						{
-							aucTransmitBuffer[0] = 4;
-
-							if (bBroadcasting)
-							{
-								pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
-
-								// Echo what the data will be over the air on the next message period.
-								if (bDisplay)
-								{
-									printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
-										USER_ANTCHANNEL,
-										aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
-										aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
-										aucTransmitBuffer[MESSAGE_BUFFER_DATA3_INDEX],
-										aucTransmitBuffer[MESSAGE_BUFFER_DATA4_INDEX],
-										aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
-										aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
-										aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-										aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
-								}
-								cont4++;
-							}
-							if (cont4 == 4)
-							{
-								stato1 = 1;
-							}
-							break;
-						}
-						}
-					if (stato1==1)
-					{ */
+					
 					if (cont == 0)
 					{
 						aucTransmitBuffer[0] = 1;
 
+
 						if (bBroadcasting)
 						{
 							pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
+							dispteo[0]++;
 
 							// Echo what the data will be over the air on the next message period.
 							if (bDisplay)
@@ -747,6 +726,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 					if (cont == 1)
 					{
 						aucTransmitBuffer[0] = 2;
+						dispteo[1]++;
 
 						if (bBroadcasting)
 						{
@@ -783,6 +763,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 					if (cont == 2)
 					{
 						aucTransmitBuffer[0] = 3;
+						dispteo[2]++;
 
 						if (bBroadcasting)
 						{
@@ -1255,6 +1236,10 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				   stMessage.aucData[ucDataOffset + 5],
 				   stMessage.aucData[ucDataOffset + 6],
 				   stMessage.aucData[ucDataOffset + 7]);
+			   if (stMessage.aucData[ucDataOffset + 0] == 1) disp[0]++;  //dato ricevuto dal dispositivo 1, incrementa il conteggio
+			   if (stMessage.aucData[ucDataOffset + 0] == 2) disp[1]++;
+			   if (stMessage.aucData[ucDataOffset + 0] == 3) disp[2]++;
+
 		   }
 	   }
 	   else
