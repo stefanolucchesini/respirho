@@ -22,6 +22,7 @@
 ".\_build\nrf_soc.o"
 ".\_build\nrf_drv_saadc.o"
 ".\_build\nrf_saadc.o"
+".\_build\nrf_nvmc.o"
 ".\_build\app_button.o"
 ".\_build\app_error.o"
 ".\_build\app_error_weak.o"

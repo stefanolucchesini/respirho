@@ -24,7 +24,6 @@
  * @retval      uint32_t        Error code
  */
 uint32_t nrf_drv_mpu_init(void);
-	
 
 
 /**@brief Function for reading an arbitrary register

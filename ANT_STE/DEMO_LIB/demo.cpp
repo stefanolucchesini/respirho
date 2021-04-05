@@ -134,8 +134,19 @@ BOOL Demo::Init(UCHAR ucDeviceNumberUSB_)
 		//char st[1024];
 		//fgets(st, sizeof(st), stdin);
 		//sscanf(st, "%u", &ucDeviceNumberUSB_);
-		printf("USB DEVICE NUMBER SET TO DEFAULT (0)\n");
-		ucDeviceNumberUSB_ =0;
+		ucDeviceNumberUSB_ = 0;
+		printf("Chiavetta ANT - RESPIRHO'\n");
+		printf("Menu' comandi (sequenza di comandi consigliata)\n");
+		printf("1+invio: cerca unita' 1\n");
+		printf("c+invio: calibrazione unita' 1\n");
+		printf("2+invio: cerca unita' 2\n");
+		printf("c+invio: calibrazione unita' 2\n");
+		printf("3+invio: cerca unita' 3\n");
+		printf("c+invio: calibrazione unita' 3\n");
+		printf("0+invio: sincronizzazione di tutte le unita'\n");
+		printf("g+invio: inizio acquisizione\n");
+		printf("f+invio: fine acquisizione\n");
+		printf("q+invio: nuova acquisizione o uscita\n");
 	}
 
 	// Initialize Serial object
@@ -177,7 +188,7 @@ BOOL Demo::Init(UCHAR ucDeviceNumberUSB_)
 	uiDSIThread = DSIThread_CreateThread(&Demo::RunMessageThread, this);
 	assert(uiDSIThread);
 
-	printf("Name of file: "); fflush(stdout);
+	printf("Nome del file: "); fflush(stdout);
 	char filename[1024];
 	scanf("%s", filename);
 	strcat(filename, ".txt ");
@@ -293,6 +304,14 @@ void Demo::Start()
 			for (int i = 0; i < 3; i++) printf("Numero campioni teorici unita' %d: %d\n", i + 1, dispteo[i]);
 			dif = difftime(end, start);
 			printf("L'acquisizone e' durata %.2lf secondi\n", dif);
+			float frequenza = dispteo[0] / dif;
+			printf("Frequenza teorica: %.2lf Hz\n", frequenza); //calcolata con campioni teorici
+			float loss1 = (1 - (float)disp[0] / dispteo[0]) * 100;
+			float loss2 = (1 - (float)disp[1] / dispteo[1] )*100;
+			float loss3 = (1 - (float)disp[2] / dispteo[2]) * 100;
+			printf("Data loss unita' 1: %.2lf%%\n", loss1);
+			printf("Data loss unita' 2: %.2lf%%\n", loss2);
+			printf("Data loss unita' 3: %.2lf%%\n", loss3);
 			
 			printf("Vuoi fare una nuova acquisizione? (premi s e invio per Si, n e invio per No) \n");
 			bBroadcasting = FALSE;
@@ -351,9 +370,9 @@ void Demo::Start()
 		case 'c':
 		case 'C':
 		{
-			// Request capabilites.
-			ANT_MESSAGE_ITEM stResponse;
-			pclMessageObject->SendRequest(MESG_CAPABILITIES_ID, USER_ANTCHANNEL, &stResponse, 0);
+			aucTransmitBuffer[7] = 0xFF;
+			memset(aucTransmitBuffer, 0, ANT_STANDARD_DATA_PAYLOAD_SIZE - 1);    //avvia calibrazione
+			stato = 0;
 			break;
 		}
 		case 'v':
@@ -799,165 +818,13 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 							cont = 0;
 						break;
 					}
-					/*if (cont == 1 || cont == 2)
-					{
-						aucTransmitBuffer[0] = 1;
-
-						if (bBroadcasting)
-						{
-							pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
-
-							// Echo what the data will be over the air on the next message period.
-							if (bDisplay)
-							{
-								printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
-									USER_ANTCHANNEL,
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA3_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA4_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
-								fprintf(fp1, "Tx:(% d) : [% 02x] , [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x]\n",
-									USER_ANTCHANNEL,
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA3_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA4_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
-							}
-							cont++;
-						}
-						break;
-					}
-					if (cont == 3 || cont == 4)
-					{
-						aucTransmitBuffer[0] = 2;
-
-						if (bBroadcasting)
-						{
-							pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
-
-							// Echo what the data will be over the air on the next message period.
-							if (bDisplay)
-							{
-								printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
-									USER_ANTCHANNEL,
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA3_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA4_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
-								fprintf(fp1, "Tx:(% d) : [% 02x] , [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x]\n",
-									USER_ANTCHANNEL,
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA3_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA4_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
-							}
-							cont++;
-						}
-						if (cont == 5)
-							cont = 0;
-						break;
-					}*/
-					//}
+					
 
 				}
 				
 
 			}
-			/*
 			
-
-			case EVENT_TRANSFER_TX_COMPLETED:
-			{
-				printf("Tranfer Completed\n");
-				break;
-			}
-			case EVENT_TRANSFER_TX_FAILED:
-			{
-				printf("Tranfer Failed\n");
-				break;
-			}
-
-			case EVENT_QUE_OVERFLOW:
-			case EVENT_SERIAL_QUE_OVERFLOW:
-				break;
-
-
-			case EVENT_CHANNEL_COLLISION:
-			{
-				printf("Channel Collision\n");
-				break;
-			}
-
-			default:
-			{
-				printf("Unhandled channel event: 0x%X\n", stMessage.aucData[2]);
-				break;
-			}
-
-			}
-
-			break;
-		}
-
-		default:
-		{
-			printf("Unhandled response 0%d to message 0x%X\n", stMessage.aucData[2], stMessage.aucData[1]);
-			break;
-		}
-		}
-		break;
-	}
-
-
-	case MESG_RX_EXT_MESGS_ENABLE_ID:
-		break;
-
-
-	case MESG_STARTUP_MESG_ID:
-	{
-		printf("RESET Complete, reason: ");
-
-		UCHAR ucReason = stMessage.aucData[MESSAGE_BUFFER_DATA1_INDEX];
-
-		if (ucReason == RESET_POR)
-			printf("RESET_POR");
-		if (ucReason & RESET_SUSPEND)
-			printf("RESET_SUSPEND ");
-		if (ucReason & RESET_SYNC)
-			printf("RESET_SYNC ");
-		if (ucReason & RESET_CMD)
-			printf("RESET_CMD ");
-		if (ucReason & RESET_WDT)
-			printf("RESET_WDT ");
-		if (ucReason & RESET_RST)
-			printf("RESET_RST ");
-		printf("\n");
-		break;
-	}
-
-	default:
-	{
-		break;
-	}
-	}
-	return;
-} */
 			 case EVENT_RX_SEARCH_TIMEOUT:
 			 {
 				 printf("Search Timeout\n");

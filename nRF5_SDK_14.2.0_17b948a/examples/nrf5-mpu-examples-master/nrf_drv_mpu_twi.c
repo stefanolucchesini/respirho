@@ -81,9 +81,9 @@ uint32_t nrf_drv_mpu_init(void)
     const nrf_drv_twi_config_t twi_mpu_config = {
        .scl                = MPU_TWI_SCL_PIN,
        .sda                = MPU_TWI_SDA_PIN,
-       .frequency          = NRF_TWI_FREQ_400K,
+       .frequency          = NRF_TWI_FREQ_100K,
        .interrupt_priority = APP_IRQ_PRIORITY_HIGHEST,
-       .clear_bus_init     = false
+       .clear_bus_init     = true
     };
     
     err_code = nrf_drv_twi_init(&m_twi_instance, &twi_mpu_config, nrf_drv_mpu_twi_event_handler, NULL);
@@ -93,12 +93,10 @@ uint32_t nrf_drv_mpu_init(void)
 	}
     
     nrf_drv_twi_enable(&m_twi_instance);
+
 	
 	return NRF_SUCCESS;
 }
-
-
-
 
 // The TWI driver is not able to do two transmits without repeating the ADDRESS + Write bit byte
 // Hence we need to merge the MPU register address with the buffer and then transmit all as one transmission

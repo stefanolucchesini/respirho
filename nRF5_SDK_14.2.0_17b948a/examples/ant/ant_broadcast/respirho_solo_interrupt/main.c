@@ -6,7 +6,6 @@
 #include "bsp.h"
 #include "hardfault.h"
 #include "app_error.h"
-#include "app_timer.h"
 #include "nrf_sdh.h"
 #include "nrf_sdh_ant.h"
 #include "nrf_pwr_mgmt.h"
@@ -21,31 +20,40 @@
 #include "nrf_delay.h"
 //Header per pulsanti e led
 #include "nrf_gpio.h"
-
+//ADC e timer
 #include "nrf_drv_saadc.h"
 #include "app_simple_timer.h"
-
+#include "app_timer.h"
+#include "nrf_drv_clock.h"
+//flash memory management
+#include "nrf_nvmc.h"
 
 
 #define APP_ANT_OBSERVER_PRIO   1    /**< Application's ANT observer priority. You shouldn't need to modify this value. */
 #define LED 11
 #define SAADC_CHANNEL 0     //Pin A0 (sarebbe il 2)
-#define TIMEOUT_VALUE 25000                          /**< 25 mseconds timer time-out value. */
+#define TIMEOUT_VALUE 25      /**< 25 mseconds timer time-out value. Interrupt a 40Hz*/
+APP_TIMER_DEF(m_repeated_timer_id);     /**< Handler for repeated timer used to blink LED 1. */
 
-#define DEVICENUMBER 2     //1, 2 o 3
+#define DEVICENUMBER 2     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
 //Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
-
-int count=0, stato=0, i=0, flag_cal = 0;
-float deltat = 0.025;
-float mx, my, mz;
-float quat[4];
+//!!ATTENZIONE!! L'utilizzo dei log con UART aumenta il data loss di ANT, se non si deve fare debug vanno disabilitati 
+//nel file sdk_config.h
+//per debug mettere ottimizzazione al livello 0
+volatile int count=0, stato=0, i=0;
+const float deltat = 0.025;
+volatile float mx, my, mz;
+volatile float quat[4];
 
 //Valori default di calibrazione
-float magnetometer_bias[] = {+15.6000004, -12.1499996, -11.6999998};  // X, Y, Z
-float magnetometer_scale[] = {1.02588999, 0.990625024, 0.984472036};   //X, Y, Z
-float acc_bias[] = {0.00258519663, -0.00990874227, -0.01995349}; //X, Y, Z
-float gyro_bias[] = {0.0176442917, -0.0170090254, +0.00491240807}; //X, Y, Z
+volatile float magnetometer_bias[] = {+15.6000004, -12.1499996, -11.6999998};  // X, Y, Z
+volatile float magnetometer_scale[] = {1.02588999, 0.990625024, 0.984472036};   //X, Y, Z
+volatile float acc_bias[] = {0.00258519663, -0.00990874227, -0.01995349}; //X, Y, Z
+volatile float gyro_bias[] = {0.0176442917, -0.0170090254, +0.00491240807}; //X, Y, Z
+volatile int cal_rec = 0;  //impedisce che si faccia più di una calibrazione, se se ne vuole fare un'altra bisogna spegnere e riaccendere
+volatile int flag_cal = 0;  //flag che definisce calibrazione in corso
+#define START_ADDR 0x00011200  //indirizzo di partenza per salvataggio dati in memoria non volatile
 
 int notshown = 1; // per il log
 
@@ -98,12 +106,12 @@ void icm_init(void)
 		ret_code_t ret_code;
 	
 		// Initiate ICM driver
-		ret_code = app_icm_init();
+		ret_code = app_icm_init(); //inizializza i2c
 		APP_ERROR_CHECK(ret_code); // Check for errors in return value
-
-		ICM20948_reset();
 	
+		ICM20948_reset();
 		ICM20948_selectAutoClockSource();
+
 		//ICM20948_enableI2cMaster(); //da valutare se inserire
 				
 		ICM20948_enableAccelGyro();
@@ -115,8 +123,8 @@ void icm_init(void)
 		
 		if(MAGNETOMETRO_ABILITATO){
 		
-		
-		ret_code = ICM20948_resetMag();
+	 ICM20948_resetMag();
+
 			
 		app_icm_magn_config_t magnetometer_config;
 		
@@ -131,7 +139,7 @@ void icm_init(void)
 }
 
 void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
-	flag_cal = 1; //dice agli interrupt che la calibrazione è in corso
+	flag_cal = 1;
 	int16_t max_x;
 	int16_t min_x;
 	int16_t max_y;
@@ -240,8 +248,51 @@ nrf_gpio_pin_set(LED);
 							magnetometer_scale[2] = avg_rad/mz_scale;	
 
 nrf_gpio_pin_clear(LED);						
-flag_cal = 0;						
-}							
+flag_cal = 0;				
+}	
+
+void salva_calib_flash(){   //salva i dati di calibrazione nella flash
+
+		uint32_t f_addr = START_ADDR;   //indirizzo ultima pagina di memoria
+//    uint32_t* p_addr = (uint32_t*) f_addr;     //puntatore alla prima cella dell'ultima pagina
+		//float val = -0.45924;
+		nrf_nvmc_page_erase(f_addr);
+
+	//nrf_nvmc_write_word(f_addr,*(uint32_t*)&val);  
+    //uint32_t u= *p_addr;
+		//magnetometer_bias[1] = *(float *)&u;
+	float vettorone[12];
+	for(int u = 0; u<=11; u++){
+		if(u<=2) vettorone[u] = magnetometer_bias[u];
+		if(u>2 && u<=5) vettorone[u] = magnetometer_scale[u-3];
+		if(u>5 && u<=8) vettorone[u] = acc_bias[u-6];
+		if(u>8 && u<=11) vettorone[u] = gyro_bias[u-9];
+	}	
+	nrf_nvmc_write_words(f_addr, (uint32_t*)&vettorone, 12);
+
+}
+
+void leggi_calib_flash(){
+ 
+	uint32_t f_addr = START_ADDR;   
+  uint32_t* p_addr = (uint32_t*) f_addr;     //puntatore alla prima cella dell'indirizzo specificato
+	uint8_t alreadywrittentoflash = 1;
+	float vettorone[12];
+	for(int u = 0; u<=11; u++){
+	uint32_t c= *(p_addr+u);
+	vettorone[u] = *(float *)&c;
+	if(c == 0xFFFFFFFF) alreadywrittentoflash = 0;
+	}
+ if(alreadywrittentoflash){
+	for(int u = 0; u<=11; u++){
+		if(u<=2)  magnetometer_bias[u] = vettorone[u];
+		if(u>2 && u<=5) magnetometer_scale[u-3] = vettorone[u];
+		if(u>5 && u<=8) acc_bias[u-6] = vettorone[u];
+		if(u>8 && u<=11) gyro_bias[u-9] = vettorone[u];
+	}	
+ }
+ else salva_calib_flash(); //se la memoria non volatile è vuota, ci salva i valori di default
+}
 
 /* ANT functions*/
  void ant_message_send(void)
@@ -281,14 +332,14 @@ void ant_send(int campione, int counter, int quat1, int quat2, int quat3, int qu
                                                       ANT_STANDARD_DATA_PAYLOAD_SIZE,
                                                       message_payload);
     APP_ERROR_CHECK(err_code);
-    
+	NRF_LOG_INFO("Messaggio numero %d, ret code ant broadcast: %d", counter, err_code);
 }
 
 
 void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
 {
 
-    if (p_ant_evt->channel == BROADCAST_CHANNEL_NUMBER && !flag_cal)  //durante la calibrazione ignora tutti i messaggi che arrivano dal master
+    if (p_ant_evt->channel == BROADCAST_CHANNEL_NUMBER && flag_cal == 0)  //durante la calibrazione ignora tutti i messaggi che arrivano dal master
     {
         switch (p_ant_evt->event)
         {
@@ -299,17 +350,26 @@ void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
 									{ 									
 											stato=0;									  //ferma l'acquisizione												
 											nrf_gpio_pin_set(LED);
-										  //calibrazione(); bisogna creare un comando apposito!!
+										  sd_ant_pending_transmit_clear (BROADCAST_CHANNEL_NUMBER, NULL); //svuota il buffer, utile per una seconda acquisizione
+										  NRF_LOG_INFO("Ricevuto messaggio di stop acquisizione");
+										  
 									}
-									 if (p_ant_evt->message.ANT_MESSAGE_aucPayload [0x00] == 0x00 && p_ant_evt->message.ANT_MESSAGE_aucPayload [0x07] != 0x80)   //se il primo byte del payload è zero avvia l'acquisizione
+									 if (p_ant_evt->message.ANT_MESSAGE_aucPayload [0x00] == 0x00 && p_ant_evt->message.ANT_MESSAGE_aucPayload [0x07] == 0x00)   //se il primo byte del payload è zero avvia l'acquisizione
 									  {
+										 NRF_LOG_INFO("Inizio acquisizione");	
 										 sd_ant_pending_transmit_clear (BROADCAST_CHANNEL_NUMBER, NULL); //svuota il buffer, utile per una seconda acquisizione
 										 nrf_gpio_pin_clear(LED);
 										 count=0;
 										 i=0;
 										 stato = 1;
 								    }
-				
+									if (p_ant_evt->message.ANT_MESSAGE_aucPayload [0x00] == 0x00 && p_ant_evt->message.ANT_MESSAGE_aucPayload [0x07] == 0xFF && cal_rec == 0)   //messaggio di inizio calibrazione
+									  {
+										 cal_rec = 1;
+										 stato = 0;
+										 calibrazione();
+										 salva_calib_flash();
+								    }		
                 }
                 break;
 
@@ -322,19 +382,16 @@ NRF_SDH_ANT_OBSERVER(m_ant_observer, APP_ANT_OBSERVER_PRIO, ant_evt_handler, NUL
 
 /**@brief Function for the Timer and BSP initialization.
  */
-static void utils_setup(void)
+static void utils_setup(void)  //funzione da eliminare?
 {
 		ret_code_t err_code;
     
-		//err_code = NRF_LOG_INIT(NULL);
-    //APP_ERROR_CHECK(err_code);
-
-    err_code = app_timer_init();
+    err_code = app_timer_init(); 
     APP_ERROR_CHECK(err_code);
 
-    err_code = bsp_init(BSP_INIT_LED,
+    err_code = bsp_init(BSP_INIT_LED,   
                         NULL);
-    APP_ERROR_CHECK(err_code);
+   APP_ERROR_CHECK(err_code);
 
     err_code = nrf_pwr_mgmt_init();
     APP_ERROR_CHECK(err_code);
@@ -379,7 +436,8 @@ static void ant_channel_rx_broadcast_setup(void)
 }
 
 
-void timeout_handler(void * p_context)
+//void timeout_handler(void * p_context)  //simple timer
+static void repeated_timer_handler(void * p_context)  //app timer
 { 
 	 if(flag_cal) return; //se la calibrazione è in corso non fa niente
 			        //ICM-20948
@@ -429,7 +487,6 @@ void timeout_handler(void * p_context)
 					
   if(stato == 1 && i == 0) {
 	ant_send( sample, count,quat[0] ,quat[1] ,quat[2] ,quat[3] );
-	NRF_LOG_INFO("Messaggio numero %d inviato", count);
 	count++;
 	nrf_gpio_pin_clear(LED);
   }									                  
@@ -441,47 +498,52 @@ int main(void)
 		nrf_gpio_pin_set(LED);
 
 	  uint32_t err_code;
-	  log_init();
-	  utils_setup();
-    softdevice_setup();
-    ant_channel_rx_broadcast_setup();
-
-    // Initialize.
-   
-		//NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
-  //    NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
-    icm_init();
-    saadc_init();
+	  log_init();     //inizializza log
+	  //utils_setup();  //inizializza app timer e power management
+    softdevice_setup();  //abilita softdevice
+    ant_channel_rx_broadcast_setup();   //abilita canale ANT
+	//NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
+    //NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
+    icm_init();      //inizializza unità IMU
+    saadc_init();   //inizializza convertitore analogico digitale
 
 	
     // Start execution  
 		NRF_LOG_INFO("Dispositivo RESPIRHO' numero %d", DEVICENUMBER);
 	
 		
-//	  static uint8_t                  m_channel_number=0; 
+
 	  uint8_t         message_addr[ANT_STANDARD_DATA_PAYLOAD_SIZE];
 	  memset(message_addr, DEVICENUMBER, ANT_STANDARD_DATA_PAYLOAD_SIZE);
 		sd_ant_channel_radio_tx_power_set 	(BROADCAST_CHANNEL_NUMBER, RADIO_TX_POWER_LVL_4, NULL); 	
 	  err_code = sd_ant_broadcast_message_tx(BROADCAST_CHANNEL_NUMBER,
-                                                      ANT_STANDARD_DATA_PAYLOAD_SIZE,
-                                                      message_addr);	
+                                           ANT_STANDARD_DATA_PAYLOAD_SIZE,
+                                           message_addr);	
 																											
-		err_code = app_simple_timer_init();  //Timer1, 1MHz, 16 bit
+		//err_code = app_simple_timer_init();  //Inizializza Timer1, 1MHz, 16 bit
+    //APP_ERROR_CHECK(err_code);
+		app_timer_init();
+		err_code = app_timer_create(&m_repeated_timer_id,
+                                APP_TIMER_MODE_REPEATED,
+                                repeated_timer_handler);
     APP_ERROR_CHECK(err_code);
-
-    err_code = app_simple_timer_start(APP_SIMPLE_TIMER_MODE_REPEATED, timeout_handler, TIMEOUT_VALUE, NULL);
-    APP_ERROR_CHECK(err_code);				
 		
 		nrf_gpio_pin_clear(LED);
-    // Main loop.
+		leggi_calib_flash();  //recupera valori di calibrazione salvati nella flash 
+		err_code = nrf_pwr_mgmt_init();
+    APP_ERROR_CHECK(err_code);
+		//err_code = app_simple_timer_start(APP_SIMPLE_TIMER_MODE_REPEATED, timeout_handler, TIMEOUT_VALUE, NULL);  //Interrupt timer partito
+		err_code = app_timer_start(m_repeated_timer_id, APP_TIMER_TICKS(TIMEOUT_VALUE), NULL);
+    APP_ERROR_CHECK(err_code);	
+		
     while (1)
     {
-			if(NRF_LOG_PROCESS() == false)
-        {
+	//		if(NRF_LOG_PROCESS() == false)
+  //      {
 
-			NRF_LOG_FLUSH();
-			nrf_pwr_mgmt_run();
-			
-    }
+	//		NRF_LOG_FLUSH();
+			nrf_pwr_mgmt_run();		
+  //  }
+
 }
 }

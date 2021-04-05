@@ -313,8 +313,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
-            <oTime>0</oTime>
+            <Optim>4</Optim>
+            <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
             <Strict>0</Strict>
@@ -322,7 +322,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>0</wLevel>
+            <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
@@ -339,7 +339,7 @@
               <MiscControls>--reduce_paths</MiscControls>
               <Define>BOARD_VARIANT CONFIG_GPIO_AS_PINRESET NRF52 NRF52832_XXAA NRF52_PAN_74 S212 SOFTDEVICE_PRESENT SWI_DISABLE0  ICM20948 MPU_USES_TWI</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\config;..\..\..\..\..\..\..\components;..\..\..\..\..\..\..\components\ant\ant_channel_config;..\..\..\..\..\..\..\components\boards;..\..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\..\components\drivers_nrf\gpiote;..\..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\..\components\libraries\atomic;..\..\..\..\..\..\..\components\libraries\balloc;..\..\..\..\..\..\..\components\libraries\bsp;..\..\..\..\..\..\..\components\libraries\button;..\..\..\..\..\..\..\components\libraries\experimental_log;..\..\..\..\..\..\..\components\libraries\experimental_log\src;..\..\..\..\..\..\..\components\libraries\experimental_memobj;..\..\..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\..\..\components\libraries\hardfault;..\..\..\..\..\..\..\components\libraries\hardfault\nrf52;..\..\..\..\..\..\..\components\libraries\mutex;..\..\..\..\..\..\..\components\libraries\pwr_mgmt;..\..\..\..\..\..\..\components\libraries\scheduler;..\..\..\..\..\..\..\components\libraries\strerror;..\..\..\..\..\..\..\components\libraries\timer;..\..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\..\components\softdevice\common;..\..\..\..\..\..\..\components\softdevice\s212\headers;..\..\..\..\..\..\..\components\softdevice\s212\headers\nrf52;..\..\..\..\..\..\..\components\toolchain;..\config;..\..\..\..\..\..\..\..\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log;..\..\..\..\..\..\nrf5-mpu-examples-master;..\..\..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\..\..\..\nRF5_SDK_14.2.0_17b948a\examples\nrf5-mpu-examples-master;..\..\..\..\..\..\nrf5-mpu-examples-master\nrf5-mpu-simple\pca10040\blank\arm5_no_packs;..\..\..\..\..\..\..\external\fprintf;..\..\..\..\..\..\..\components\drivers_nrf\saadc;..\..\..\..\..\..\..\components\drivers_nrf\ppi;..\..\..\..\..\..\..\components\drivers_nrf\power;..\..\..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\..\..\components\drivers_nrf\timer;..\..\..\..\..\..\..\components\libraries\bsp;..\arm5_no_packs;..\..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\..\components\libraries\simple_timer</IncludePath>
+              <IncludePath>..\..\..\config;..\..\..\..\..\..\..\components;..\..\..\..\..\..\..\components\ant\ant_channel_config;..\..\..\..\..\..\..\components\boards;..\..\..\..\..\..\..\components\drivers_nrf\common;..\..\..\..\..\..\..\components\drivers_nrf\delay;..\..\..\..\..\..\..\components\drivers_nrf\gpiote;..\..\..\..\..\..\..\components\drivers_nrf\hal;..\..\..\..\..\..\..\components\libraries\atomic;..\..\..\..\..\..\..\components\libraries\balloc;..\..\..\..\..\..\..\components\libraries\bsp;..\..\..\..\..\..\..\components\libraries\button;..\..\..\..\..\..\..\components\libraries\experimental_log;..\..\..\..\..\..\..\components\libraries\experimental_log\src;..\..\..\..\..\..\..\components\libraries\experimental_memobj;..\..\..\..\..\..\..\components\libraries\experimental_section_vars;..\..\..\..\..\..\..\components\libraries\hardfault;..\..\..\..\..\..\..\components\libraries\hardfault\nrf52;..\..\..\..\..\..\..\components\libraries\mutex;..\..\..\..\..\..\..\components\libraries\pwr_mgmt;..\..\..\..\..\..\..\components\libraries\scheduler;..\..\..\..\..\..\..\components\libraries\strerror;..\..\..\..\..\..\..\components\libraries\timer;..\..\..\..\..\..\..\components\libraries\util;..\..\..\..\..\..\..\components\softdevice\common;..\..\..\..\..\..\..\components\softdevice\s212\headers;..\..\..\..\..\..\..\components\softdevice\s212\headers\nrf52;..\..\..\..\..\..\..\components\toolchain;..\config;..\..\..\..\..\..\..\..\nRF5_SDK_14.2.0_17b948a\components\libraries\experimental_log;..\..\..\..\..\..\nrf5-mpu-examples-master;..\..\..\..\..\..\..\components\drivers_nrf\twi_master;..\..\..\..\..\..\..\..\nRF5_SDK_14.2.0_17b948a\examples\nrf5-mpu-examples-master;..\..\..\..\..\..\nrf5-mpu-examples-master\nrf5-mpu-simple\pca10040\blank\arm5_no_packs;..\..\..\..\..\..\..\external\fprintf;..\..\..\..\..\..\..\components\drivers_nrf\saadc;..\..\..\..\..\..\..\components\drivers_nrf\ppi;..\..\..\..\..\..\..\components\drivers_nrf\power;..\..\..\..\..\..\..\components\drivers_nrf\nrf_soc_nosd;..\..\..\..\..\..\..\components\drivers_nrf\timer;..\..\..\..\..\..\..\components\libraries\bsp;..\arm5_no_packs;..\..\..\..\..\..\..\components\drivers_nrf\uart;..\..\..\..\..\..\..\components\libraries\simple_timer;..\..\..\..\..\..\..\components\drivers_nrf\clock</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -582,6 +582,11 @@
               <FileName>nrf_saadc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\hal\nrf_saadc.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf_nvmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\..\..\components\drivers_nrf\hal\nrf_nvmc.c</FilePath>
             </File>
           </Files>
         </Group>

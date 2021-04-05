@@ -19,3 +19,11 @@ C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET
 C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\DEMO_NET.csproj.CopyComplete
 C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\demo_net.exe
 C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\DEMO_NET\obj\x86\Debug\demo_net.pdb
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Debug\demo_net.exe.config
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Debug\demo_net.exe
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Debug\demo_net.pdb
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Debug\DEMO_NET.csprojAssemblyReference.cache
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Debug\DEMO_NET.csproj.CoreCompileInputs.cache
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Debug\DEMO_NET.csproj.CopyComplete
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Debug\demo_net.exe
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_NET\obj\x86\Debug\demo_net.pdb

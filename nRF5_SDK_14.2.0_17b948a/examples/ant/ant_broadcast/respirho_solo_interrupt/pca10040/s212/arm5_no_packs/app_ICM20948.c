@@ -77,8 +77,7 @@ uint32_t ICM20948_selectAutoClockSource()
   ret_code_t err_code;
   app_icm_reg_bank_select(USER_BANK_0);
   err_code = nrf_drv_mpu_write_single_register(UB0_PWR_MGMNT_1, UB0_PWR_MGMNT_1_CLOCK_SEL_AUTO); //write 1 to the PWR_MGMNT_1  auto selects the best available clock source
-//  APP_ERROR_CHECK(err_code);
-//  return 1;
+
 	if(err_code != NRF_SUCCESS) return err_code;
   return NRF_SUCCESS;
 }
@@ -90,8 +89,7 @@ uint32_t ICM20948_enableAccelGyro()
   app_icm_reg_bank_select(USER_BANK_0);
   err_code = nrf_drv_mpu_write_single_register(UB0_PWR_MGMNT_2, UB0_PWR_MGMNT_2_SEN_ENABLE); //write 0x00 to PWR_MGMNT_2 enables acc and gyro (all axes) 
   
-//  APP_ERROR_CHECK(err_code);
-//  return 1;
+
 	if(err_code != NRF_SUCCESS) return err_code;
   return NRF_SUCCESS;
 }
@@ -103,8 +101,6 @@ uint32_t ICM20948_disableAccelGyro()
   app_icm_reg_bank_select(USER_BANK_0);
   err_code = nrf_drv_mpu_write_single_register(UB0_PWR_MGMNT_2, UB0_PWR_MGMNT_2_DISABLE); //write 0x3F to PWR_MGMNT_2 diables acc and gyro (all axes)
   
-//  APP_ERROR_CHECK(err_code);
-//  return 1;
 	if(err_code != NRF_SUCCESS) return err_code;
   return NRF_SUCCESS;
 }
@@ -118,8 +114,7 @@ uint32_t ICM20948_configAccel()
 
 //  err_code = nrf_drv_mpu_write_single_register(UB2_ACCEL_CONFIG, UB2_ACCEL_CONFIG_FS_SEL_2G);  //[2:1]: Full Scale +-2g. [0]: Bypass accel DLPF
   err_code = nrf_drv_mpu_write_single_register(UB2_ACCEL_CONFIG, UB2_ACCEL_CONFIG_FS_SEL_4G);
-//  APP_ERROR_CHECK(err_code);
-//  return 1;
+
 	if(err_code != NRF_SUCCESS) return err_code;
   return NRF_SUCCESS;
 }
@@ -133,8 +128,7 @@ uint32_t ICM20948_configGyro()
 //  err_code = nrf_drv_mpu_write_single_register(UB2_GYRO_CONFIG_1, UB2_GYRO_CONFIG_1_FS_2000DPS_DLPFCFG_152HZ); //00001111 [5:3]: BW 151.8 hz, [2:1]:FS +-2000 dps, [0]:DLPF enabled
   err_code = nrf_drv_mpu_write_single_register(UB2_GYRO_CONFIG_1, UB2_GYRO_CONFIG_1_FS_SEL_500DPS);
 	
-//  APP_ERROR_CHECK(err_code);
-//  return 1;
+
 	if(err_code != NRF_SUCCESS) return err_code;
   return NRF_SUCCESS;
 }
@@ -147,8 +141,7 @@ uint32_t ICM20948_setGyroSrd(uint8_t srd)
   err_code = app_icm_reg_bank_select(USER_BANK_2);
   nrf_drv_mpu_write_single_register(UB2_GYRO_SMPLRT_DIV, srd); //ODR is computed as follows: 1.1 kHz/(1+GYRO_SMPLRT_DIV[7:0])
 
-//  APP_ERROR_CHECK(err_code);
-//  return 1;
+
 	if(err_code != NRF_SUCCESS) return err_code;
   return NRF_SUCCESS;
 }

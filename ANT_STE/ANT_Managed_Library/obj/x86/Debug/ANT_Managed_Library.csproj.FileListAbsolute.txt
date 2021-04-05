@@ -15,3 +15,9 @@ C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Mana
 C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_Managed_Library.csproj.CoreCompileInputs.cache
 C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_NET.dll
 C:\Users\stefa\Desktop\FILE_TESISTI\ANT_PROVA-SDK_PC.3.5_CONSALVATAGGIO\ANT_Managed_Library\obj\x86\Debug\ANT_NET.pdb
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Debug\ANT_NET.dll
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Debug\ANT_NET.pdb
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_Managed_Library\obj\x86\Debug\ANT_Managed_Library.csprojAssemblyReference.cache
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_Managed_Library\obj\x86\Debug\ANT_Managed_Library.csproj.CoreCompileInputs.cache
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_Managed_Library\obj\x86\Debug\ANT_NET.dll
+C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_Managed_Library\obj\x86\Debug\ANT_NET.pdb
