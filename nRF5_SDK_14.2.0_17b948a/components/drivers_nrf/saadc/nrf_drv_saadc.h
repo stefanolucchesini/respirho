@@ -95,7 +95,7 @@ extern "C" {
         .resistor_n = NRF_SAADC_RESISTOR_DISABLED,     \
         .gain       = NRF_SAADC_GAIN1_6,               \
         .reference  = NRF_SAADC_REFERENCE_INTERNAL,    \
-        .acq_time   = NRF_SAADC_ACQTIME_10US,          \
+        .acq_time   = NRF_SAADC_ACQTIME_40US,          \
         .mode       = NRF_SAADC_MODE_SINGLE_ENDED,     \
         .burst      = NRF_SAADC_BURST_DISABLED,        \
         .pin_p      = (nrf_saadc_input_t)(PIN_P),      \
@@ -115,7 +115,7 @@ extern "C" {
         .resistor_n = NRF_SAADC_RESISTOR_DISABLED,                      \
         .gain       = NRF_SAADC_GAIN1_6,                                \
         .reference  = NRF_SAADC_REFERENCE_INTERNAL,                     \
-        .acq_time   = NRF_SAADC_ACQTIME_10US,                           \
+        .acq_time   = NRF_SAADC_ACQTIME_40US,                           \
         .mode       = NRF_SAADC_MODE_DIFFERENTIAL,                      \
         .pin_p      = (nrf_saadc_input_t)(PIN_P),                       \
         .pin_n      = (nrf_saadc_input_t)(PIN_N)                        \

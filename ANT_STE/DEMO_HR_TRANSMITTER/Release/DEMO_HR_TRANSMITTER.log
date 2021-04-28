@@ -7,6 +7,6 @@ C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_HR_TRANSMITTER\demo_hr_transm
 C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_HR_TRANSMITTER\demo_hr_transmitter.cpp(460,70): warning C4244: '=': conversion from 'ULONGLONG' to 'USHORT', possible loss of data
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 770 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 773 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   DEMO_HR_TRANSMITTER.vcxproj -> C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\DEMO_HR_TRANSMITTER.exe

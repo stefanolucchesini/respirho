@@ -443,14 +443,13 @@ in -I..\..\.. -I..\..\..\..\..\..\external\fprintf -I..\..\..\..\..\..\external
 \segger_rtt -I..\config -I.\RTE\_nrf52832_xxaa -IC:\Users\Stefano\AppData\Local
 \Arm\Packs\ARM\CMSIS\4.5.0\CMSIS\Include -IC:\Users\Stefano\AppData\Local\Arm\P
 acks\NordicSemiconductor\nRF_DeviceFamilyPack\8.15.0\Device\Include --predefine
-="__EVAL SETA 1" --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION
- SETA 533" --predefine="_RTE_ SETA 1" --predefine="NRF52 SETA 1" --predefine="_
-RTE_ SETA 1" --predefine="BOARD_PCA10040 SETA 1" --predefine="CONFIG_GPIO_AS_PI
-NRESET SETA 1" --predefine="FLOAT_ABI_HARD SETA 1" --predefine="NRF52 SETA 1" -
--predefine="NRF52832_XXAA SETA 1" --predefine="NRF52_PAN_74 SETA 1" --cpreproc_
-opts=-DBOARD_PCA10040,-DCONFIG_GPIO_AS_PINRESET,-DFLOAT_ABI_HARD,-DNRF52,-DNRF5
-2832_XXAA,-DNRF52_PAN_74 --list=.\_build\arm_startup_nrf52.lst RTE\Device\nRF52
-832_xxAA\arm_startup_nrf52.s
+="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 533" --predefine="_RTE
+_ SETA 1" --predefine="NRF52 SETA 1" --predefine="_RTE_ SETA 1" --predefine="BO
+ARD_PCA10040 SETA 1" --predefine="CONFIG_GPIO_AS_PINRESET SETA 1" --predefine="
+FLOAT_ABI_HARD SETA 1" --predefine="NRF52 SETA 1" --predefine="NRF52832_XXAA SE
+TA 1" --predefine="NRF52_PAN_74 SETA 1" --cpreproc_opts=-DBOARD_PCA10040,-DCONF
+IG_GPIO_AS_PINRESET,-DFLOAT_ABI_HARD,-DNRF52,-DNRF52832_XXAA,-DNRF52_PAN_74 --l
+ist=.\_build\arm_startup_nrf52.lst RTE\Device\nRF52832_xxAA\arm_startup_nrf52.s
 
 
 
@@ -1105,4 +1104,4 @@ Symbol: __main
       At line 215 in file RTE\Device\nRF52832_xxAA\arm_startup_nrf52.s
 Comment: __main used once
 2 symbols
-420 symbols in table
+419 symbols in table

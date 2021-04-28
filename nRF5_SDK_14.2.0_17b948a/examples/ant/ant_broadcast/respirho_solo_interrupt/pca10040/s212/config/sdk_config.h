@@ -368,7 +368,7 @@
 // <e> UART_ENABLED - nrf_drv_uart - UART/UARTE peripheral driver
 //==========================================================
 #ifndef UART_ENABLED
-#define UART_ENABLED 0
+#define UART_ENABLED 1
 #endif
 // <o> UART_DEFAULT_CONFIG_HWFC  - Hardware Flow Control
  
@@ -718,7 +718,7 @@
 // <i> Module will trace percentage of CPU usage in one second intervals.
 
 #ifndef NRF_PWR_MGMT_CONFIG_CPU_USAGE_MONITOR_ENABLED
-#define NRF_PWR_MGMT_CONFIG_CPU_USAGE_MONITOR_ENABLED 0
+#define NRF_PWR_MGMT_CONFIG_CPU_USAGE_MONITOR_ENABLED 1
 #endif
 
 // <e> NRF_PWR_MGMT_CONFIG_STANDBY_TIMEOUT_ENABLED - Enable standby timeout.
@@ -841,7 +841,7 @@
 // <e> NRF_LOG_BACKEND_UART_ENABLED - nrf_log_backend_uart - Log UART backend
 //==========================================================
 #ifndef NRF_LOG_BACKEND_UART_ENABLED
-#define NRF_LOG_BACKEND_UART_ENABLED 0
+#define NRF_LOG_BACKEND_UART_ENABLED 1
 #endif
 // <o> NRF_LOG_BACKEND_UART_TX_PIN - UART TX pin 
 #ifndef NRF_LOG_BACKEND_UART_TX_PIN
@@ -889,7 +889,7 @@
 // <e> NRF_LOG_ENABLED - Logging module for nRF5 SDK
 //==========================================================
 #ifndef NRF_LOG_ENABLED
-#define NRF_LOG_ENABLED 0
+#define NRF_LOG_ENABLED 1
 #endif
 // <e> NRF_LOG_USES_COLORS - If enabled then ANSI escape code for colors is prefixed to every string
 //==========================================================
@@ -1214,7 +1214,7 @@
 // <e> CLOCK_CONFIG_LOG_ENABLED - Enables logging in the module.
 //==========================================================
 #ifndef CLOCK_CONFIG_LOG_ENABLED
-#define CLOCK_CONFIG_LOG_ENABLED 0
+#define CLOCK_CONFIG_LOG_ENABLED 1
 #endif
 // <o> CLOCK_CONFIG_LOG_LEVEL  - Default Severity level
  

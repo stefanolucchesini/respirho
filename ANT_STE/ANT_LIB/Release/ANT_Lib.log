@@ -1,4 +1,4 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(491,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (ANT_LIB 2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (ANT_LIB 2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   antfs_client_channel.cpp
 C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\ANTFS\antfs_client_channel.cpp(1046,136): warning C4100: 'pvData_': unreferenced formal parameter
 C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\ANTFS\antfs_client_channel.cpp(1046,115): warning C4100: 'ulDataLength_': unreferenced formal parameter

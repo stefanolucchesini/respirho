@@ -84,3 +84,4 @@ Mkfile.old
 dkms.conf
 *.Stefano
 ANT_STE/DEMO_LIB/test.txt
+ANT_STE/Release/test.txt

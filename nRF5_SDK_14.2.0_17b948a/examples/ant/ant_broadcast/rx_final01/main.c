@@ -132,13 +132,13 @@ void icm_init(void)
 		ret_code = ICM20948_setGyroSrd(21); //19 nella versione MPU. ODR is computed as follows: 1.1 kHz/(1+GYRO_SMPLRT_DIV[7:0]) 1100/(1+21) = 50 Hz
 		ret_code = ICM20948_setAccelSrd(21);//19 nella versione MPU (in ICM sono due registri separati, mentre in MPU è unico )
 		//ODR is computed as follows: 1.125 kHz/(1+ACCEL_SMPLRT_DIV[11:0]) 1125/(21+1) = 51.136 Hz
-		/*
+		
 		ret_code = ICM20948_resetMag();
 		app_icm_magn_config_t magnetometer_config;
 		magnetometer_config.mode = MAG_CNTL2_MODE_100HZ; //continuous measurment mode 4 = 100 Hz
 		ret_code = app_icm_magnetometer_init(&magnetometer_config);	
 		APP_ERROR_CHECK(ret_code);
-		*/
+		
 }
 
 /* ANT functions*/
@@ -300,6 +300,7 @@ int main(void)
     log_init();
 		NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
     //NRF_POWER->DCDCEN = 1; //da verfificare
+	  nrf_delay_ms(100);
     icm_init();
 		
 	

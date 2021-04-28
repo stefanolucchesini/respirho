@@ -1,4 +1,3 @@
-#include "nrf_drv_mpu.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
@@ -12,12 +11,12 @@
 #include "ant_interface.h"
 #include "ant_parameters.h"
 #include "ant_channel_config.h"
-#include "app_ICM20948.h"
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
-#include "quat.h"
 #include "nrf_delay.h"
+//Generazione quaternioni
+#include "quat.h"
 //Header per pulsanti e led
 #include "nrf_gpio.h"
 //ADC e timer
@@ -27,20 +26,28 @@
 #include "nrf_drv_clock.h"
 //flash memory management
 #include "nrf_nvmc.h"
+//IMU
+#include "nrf_drv_mpu.h"
+#include "app_ICM20948.h"
 
 
 #define APP_ANT_OBSERVER_PRIO   1    /**< Application's ANT observer priority. You shouldn't need to modify this value. */
-#define LED 11
-#define SAADC_CHANNEL 0     //Pin A0 (sarebbe il 2)
-#define TIMEOUT_VALUE 25      /**< 25 mseconds timer time-out value. Interrupt a 40Hz*/
-APP_TIMER_DEF(m_repeated_timer_id);     /**< Handler for repeated timer used to blink LED 1. */
+#define LED 11							//Pin del LED rosso
+#define SAADC_BATTERY 0     //Canale tensione della batteria
+#define SAADC_REFERENCE 1   //Canale tensione di alimentazione, per vedere se è giusta
+//NRF_SAADC_INPUT_AIN0 <----PIN A0 (è il 2), per modificarlo andare in saadc_init()
+//ADC = Vsample * (1/6) * (1/Vref=0.6V) * 2^8 (lettura a 8 bit)
+//Quindi Vsample = (ADC in decimale) * 9/640
 
-#define DEVICENUMBER 2     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
+#define TIMEOUT_VALUE 25      /**< 25 mseconds timer time-out value. Interrupt a 40Hz*/
+APP_TIMER_DEF(m_repeated_timer_id);     /*Handler for repeated timer */
+
+#define DEVICENUMBER 3     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
 //Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
-//!!ATTENZIONE!! L'utilizzo dei log con UART aumenta il data loss di ANT, se non si deve fare debug vanno disabilitati 
+//!!ATTENZIONE!! L'utilizzo dei log con UART aumenta il consumo di corrente, se non si deve fare debug vanno disabilitati 
 //nel file sdk_config.h
-//per debug mettere ottimizzazione al livello 0
+//per debug mettere ottimizzazione al livello 0 e direttiva DEBUG nel compilatore
 volatile int count=0, stato=0, i=0;
 const float deltat = 0.025;
 volatile float mx, my, mz;
@@ -84,8 +91,15 @@ void saadc_init(void)
     err_code = nrf_drv_saadc_init(NULL, saadc_callback);
     APP_ERROR_CHECK(err_code);
 
-    err_code = nrf_drv_saadc_channel_init(SAADC_CHANNEL, &channel_config);
+    err_code = nrf_drv_saadc_channel_init(SAADC_BATTERY, &channel_config);
     APP_ERROR_CHECK(err_code);
+	
+	  nrf_saadc_channel_config_t channel2_config =
+    NRF_DRV_SAADC_DEFAULT_CHANNEL_CONFIG_SE(NRF_SAADC_INPUT_VDD);
+	
+	  err_code = nrf_drv_saadc_channel_init(SAADC_REFERENCE, &channel2_config);
+    APP_ERROR_CHECK(err_code);
+	 
 }
   
 static void log_init(void)
@@ -380,23 +394,6 @@ void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
 }
 NRF_SDH_ANT_OBSERVER(m_ant_observer, APP_ANT_OBSERVER_PRIO, ant_evt_handler, NULL);
 
-/**@brief Function for the Timer and BSP initialization.
- */
-static void utils_setup(void)  //funzione da eliminare?
-{
-		ret_code_t err_code;
-    
-    err_code = app_timer_init(); 
-    APP_ERROR_CHECK(err_code);
-
-    err_code = bsp_init(BSP_INIT_LED,   
-                        NULL);
-   APP_ERROR_CHECK(err_code);
-
-    err_code = nrf_pwr_mgmt_init();
-    APP_ERROR_CHECK(err_code);
-}
-
 /**@brief Function for ANT stack initialization.
  */
 static void softdevice_setup(void)
@@ -471,7 +468,7 @@ static void repeated_timer_handler(void * p_context)  //app timer
 							if( magn_values.x == 0 && magn_values.y == 0 && magn_values.z == 0 ) nrf_gpio_pin_set(LED);							
 							}
 			
-							err_code = nrf_drv_saadc_sample_convert(SAADC_CHANNEL, &sample);   //lettura ADC
+							err_code = nrf_drv_saadc_sample_convert(SAADC_BATTERY, &sample);   //lettura ADC
               APP_ERROR_CHECK(err_code);
 							
 							
@@ -494,29 +491,32 @@ static void repeated_timer_handler(void * p_context)  //app timer
 
 int main(void)
 {
+	  //NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
 	  nrf_gpio_cfg_output(LED);
 		nrf_gpio_pin_set(LED);
 
 	  uint32_t err_code;
 	  log_init();     //inizializza log
-	  //utils_setup();  //inizializza app timer e power management
     softdevice_setup();  //abilita softdevice
     ant_channel_rx_broadcast_setup();   //abilita canale ANT
-	//NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
-    //NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
     icm_init();      //inizializza unità IMU
     saadc_init();   //inizializza convertitore analogico digitale
 
 	
     // Start execution  
+	  NRF_LOG_INFO("\033[2J\033[;H"); // Clear screen
 		NRF_LOG_INFO("Dispositivo RESPIRHO' numero %d", DEVICENUMBER);
 	
-		
-
-	  uint8_t         message_addr[ANT_STANDARD_DATA_PAYLOAD_SIZE];
+	
+		sd_ant_channel_radio_tx_power_set(BROADCAST_CHANNEL_NUMBER, RADIO_TX_POWER_LVL_4, NULL); 	//potenza trasmissione
+	
+	  uint8_t  message_addr[ANT_STANDARD_DATA_PAYLOAD_SIZE];
 	  memset(message_addr, DEVICENUMBER, ANT_STANDARD_DATA_PAYLOAD_SIZE);
-		sd_ant_channel_radio_tx_power_set 	(BROADCAST_CHANNEL_NUMBER, RADIO_TX_POWER_LVL_4, NULL); 	
-	  err_code = sd_ant_broadcast_message_tx(BROADCAST_CHANNEL_NUMBER,
+		
+		err_code = nrf_drv_saadc_sample_convert(SAADC_REFERENCE, &sample);  //campiona tensione alimentazione (1.8V)
+		message_addr[ANT_STANDARD_DATA_PAYLOAD_SIZE - 1] = sample;  //invia campione nell'ultimo byte del payload
+		
+	  err_code = sd_ant_broadcast_message_tx(BROADCAST_CHANNEL_NUMBER,         //invia messaggio di accensione
                                            ANT_STANDARD_DATA_PAYLOAD_SIZE,
                                            message_addr);	
 																											
@@ -534,16 +534,17 @@ int main(void)
     APP_ERROR_CHECK(err_code);
 		//err_code = app_simple_timer_start(APP_SIMPLE_TIMER_MODE_REPEATED, timeout_handler, TIMEOUT_VALUE, NULL);  //Interrupt timer partito
 		err_code = app_timer_start(m_repeated_timer_id, APP_TIMER_TICKS(TIMEOUT_VALUE), NULL);
-    APP_ERROR_CHECK(err_code);	
+    //APP_ERROR_CHECK(err_code);	
 		
     while (1)
     {
-	//		if(NRF_LOG_PROCESS() == false)
-  //      {
+			if(NRF_LOG_PROCESS() == false)
+       {
 
 	//		NRF_LOG_FLUSH();
-			nrf_pwr_mgmt_run();		
-  //  }
+			nrf_pwr_mgmt_run();
+				
+    }
 
 }
 }

@@ -77,9 +77,9 @@ void twi_init (void)
     ret_code_t err_code;
 
     const nrf_drv_twi_config_t twi_config = {
-       .scl                = 13,
-       .sda                = 12,
-       .frequency          = NRF_TWI_FREQ_100K,
+       .scl                = 12,
+       .sda                = 13,
+       .frequency          = NRF_TWI_FREQ_400K,
        .interrupt_priority = APP_IRQ_PRIORITY_HIGH,
        .clear_bus_init     = false
     };

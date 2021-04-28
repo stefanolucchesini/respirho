@@ -2,6 +2,6 @@
      Creating library C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_WrappedLib.lib and object C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_WrappedLib.exp
   Generating code
   Previous IPDB not found, fall back to full compilation.
-  All 1204 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 1207 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   ANT_Unmanaged_Wrapper.vcxproj -> C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_WrappedLib.dll

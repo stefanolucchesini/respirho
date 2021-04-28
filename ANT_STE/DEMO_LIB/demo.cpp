@@ -191,8 +191,7 @@ BOOL Demo::Init(UCHAR ucDeviceNumberUSB_)
 	printf("Nome del file: "); fflush(stdout);
 	char filename[1024];
 	scanf("%s", filename);
-	strcat(filename, ".txt ");
-
+	strcat(filename, ".txt");
 	printf("Initialization was successful!\n"); fflush(stdout);
 	fopen_s(&fp1, filename, "w");
 	//fopen_s(&fp1, "output.txt", "w");
