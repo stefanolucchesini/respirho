@@ -59,6 +59,7 @@ int stato = 0;
 int disp[] = {0, 0, 0}; //contiene il numero di campioni acquisiti dall'unità 1, 2 e 3
 int dispteo[] = {0, 0, 0}; //contiene il numero di campioni che le unità 1, 2, 3 avrebbero dovuto acquisire 
 int cont = 0;
+bool verbose_mode = FALSE; //modalità verbosa, se disattivata non mostra e non salva tutti i printf che contengono Tx: ...
 time_t start, end;
 double dif;
 
@@ -136,7 +137,8 @@ BOOL Demo::Init(UCHAR ucDeviceNumberUSB_)
 		//sscanf(st, "%u", &ucDeviceNumberUSB_);
 		ucDeviceNumberUSB_ = 0;
 		printf("Chiavetta ANT - RESPIRHO'\n");
-		printf("Menu' comandi (sequenza di comandi consigliata)\n");
+		printf("-------------------------------------------------\n");
+		printf("Menu' comandi (sequenza di comandi consigliata):\n");
 		printf("1+invio: cerca unita' 1\n");
 		printf("c+invio: calibrazione unita' 1\n");
 		printf("2+invio: cerca unita' 2\n");
@@ -147,6 +149,8 @@ BOOL Demo::Init(UCHAR ucDeviceNumberUSB_)
 		printf("g+invio: inizio acquisizione\n");
 		printf("f+invio: fine acquisizione\n");
 		printf("q+invio: nuova acquisizione o uscita\n");
+		printf("-------------------------------------------------\n");
+		printf("La modalita' verbosa e' disattivata, si puo' attivare in qualsiasi \nmomento (dopo aver scelto il nome del file) premendo v+invio\n");
 	}
 
 	// Initialize Serial object
@@ -378,8 +382,9 @@ void Demo::Start()
 		case 'V':
 		{
 			// Request version
-			ANT_MESSAGE_ITEM stResponse;
-			pclMessageObject->SendRequest(MESG_VERSION_ID, USER_ANTCHANNEL, &stResponse, 0);
+			//ANT_MESSAGE_ITEM stResponse;
+			//pclMessageObject->SendRequest(MESG_VERSION_ID, USER_ANTCHANNEL, &stResponse, 0);
+			verbose_mode = TRUE;
 			break;
 		}
 		case 'S':
@@ -537,7 +542,8 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 
 
 		case MESG_RX_EXT_MESGS_ENABLE_ID:
-			printf("Extended messeges enabled.\n");
+			printf("Extended messages enabled.\n");
+			printf("READY.\n");
 			break;
 
 		case MESG_ASSIGN_CHANNEL_ID:
@@ -677,7 +683,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 						pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
 
 						// Echo what the data will be over the air on the next message period.
-						if (bDisplay)
+						if (bDisplay && verbose_mode)
 						{
 							printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
 								USER_ANTCHANNEL,
@@ -688,7 +694,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 								aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
 								aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
 								aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-								aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
+								aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]); 
 						}
 						else
 						{
@@ -714,7 +720,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 							dispteo[0]++;
 
 							// Echo what the data will be over the air on the next message period.
-							if (bDisplay)
+							if (bDisplay && verbose_mode)
 							{
 								printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
 									USER_ANTCHANNEL,
@@ -751,7 +757,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 							pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
 
 							// Echo what the data will be over the air on the next message period.
-							if (bDisplay)
+							if (bDisplay && verbose_mode)
 							{
 								printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
 									USER_ANTCHANNEL,
@@ -788,9 +794,10 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 							pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
 
 							// Echo what the data will be over the air on the next message period.
-							if (bDisplay)
+							if (bDisplay && verbose_mode)
 							{
-								printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
+								
+                               printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
 									USER_ANTCHANNEL,
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
@@ -1124,7 +1131,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 void Demo::PrintMenu()
 {
 	// Printout options
-	printf("\n");
+	/*printf("\n");
 	printf("M - Print this menu\n");
 	printf("A - Send Acknowledged message\n");
 	printf("B - Send Burst message\n");
@@ -1137,5 +1144,5 @@ void Demo::PrintMenu()
 	printf("D - Toggle Display\n");
 	printf("Q - Quit\n");
 	printf("\n");
-	fflush(stdout);
+	fflush(stdout); */
 }
