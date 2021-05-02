@@ -29,9 +29,9 @@ C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\ANTFS\antfs_host_
   usb_device_libusb.cpp
   usb_device_si.cpp
   WinDevice.cpp
-  antfs_directory.c
   checksum.c
   crc.c
+  antfs_directory.c
   dsi_convert.c
   dsi_thread_win32.c
   macros.c

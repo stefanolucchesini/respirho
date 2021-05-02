@@ -58,6 +58,7 @@ FILE* fp1;
 int stato = 0;
 int disp[] = {0, 0, 0}; //contiene il numero di campioni acquisiti dall'unità 1, 2 e 3
 int dispteo[] = {0, 0, 0}; //contiene il numero di campioni che le unità 1, 2, 3 avrebbero dovuto acquisire 
+uint8_t lastindex[] = { 0, 0, 0 }; //contiene l'ultimo indice ricevuto dai dispositivi 1,2,3 
 int cont = 0;
 bool verbose_mode = FALSE; //modalità verbosa, se disattivata non mostra e non salva tutti i printf che contengono Tx: ...
 time_t start, end;
@@ -136,8 +137,8 @@ BOOL Demo::Init(UCHAR ucDeviceNumberUSB_)
 		//fgets(st, sizeof(st), stdin);
 		//sscanf(st, "%u", &ucDeviceNumberUSB_);
 		ucDeviceNumberUSB_ = 0;
-		printf("Chiavetta ANT - RESPIRHO'\n");
-		printf("-------------------------------------------------\n");
+		printf("Chiavetta ANT - RespirHo'\n");
+		printf("-------------------------------------------------------------------------------\n");
 		printf("Menu' comandi (sequenza di comandi consigliata):\n");
 		printf("1+invio: cerca unita' 1\n");
 		printf("c+invio: calibrazione unita' 1\n");
@@ -149,8 +150,10 @@ BOOL Demo::Init(UCHAR ucDeviceNumberUSB_)
 		printf("g+invio: inizio acquisizione\n");
 		printf("f+invio: fine acquisizione\n");
 		printf("q+invio: nuova acquisizione o uscita\n");
-		printf("-------------------------------------------------\n");
-		printf("La modalita' verbosa e' disattivata, si puo' attivare in qualsiasi \nmomento (dopo aver scelto il nome del file) premendo v+invio\n");
+		printf("--------------------------------------------------------------------------------\n");
+		printf("La modalita' verbosa e' disattivata, si puo' attivare o disattivare in qualsiasi \nmomento (dopo aver scelto il nome del file) premendo v+invio\n");
+		printf("Consiglio: tenerla disattivata se si deve fare una lunga acquisizione (>1 ora)\n");
+		printf("--------------------------------------------------------------------------------\n");
 	}
 
 	// Initialize Serial object
@@ -286,9 +289,9 @@ void Demo::Start()
 		case 'G':   //fa partire l'acquisizione
 		case 'g':
 		{
-			stato = 1;
-			for (int i = 0; i < 3; i++) { disp[i] = 0; dispteo[i] = 0; }
+			for (int i = 0; i < 3; i++) { disp[i] = 0; dispteo[i] = 0; lastindex[i] = 0; }
 			time(&start);  //fa partire il cronometro
+			stato = 1;
 			break;
 		}
 		case 'M':
@@ -384,7 +387,7 @@ void Demo::Start()
 			// Request version
 			//ANT_MESSAGE_ITEM stResponse;
 			//pclMessageObject->SendRequest(MESG_VERSION_ID, USER_ANTCHANNEL, &stResponse, 0);
-			verbose_mode = TRUE;
+			verbose_mode = (verbose_mode == TRUE) ? FALSE : TRUE;  //toggle
 			break;
 		}
 		case 'S':
@@ -718,7 +721,6 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 						{
 							pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
 							dispteo[0]++;
-
 							// Echo what the data will be over the air on the next message period.
 							if (bDisplay && verbose_mode)
 							{
@@ -1088,7 +1090,48 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
    if (bPrintBuffer)
    {
 	   if (bDisplay)
-	   {
+	   {		   
+		   if (stato == 1)
+		   {
+			   //Nuovo dato, controlla se è consecutivo, se non lo è aggiunge un dato dummy
+			   if (stMessage.aucData[ucDataOffset + 0] == 1 && stMessage.aucData[ucDataOffset + 3] != (lastindex[0] + 1))
+				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[0] + 1); i++) {
+					   fprintf(fp1, "[01],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[0] + i + 1);
+					   printf("[01],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[0] + i + 1);
+				   }
+			   if (stMessage.aucData[ucDataOffset + 0] == 2 && stMessage.aucData[ucDataOffset + 3] != (lastindex[1] + 1))
+				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[1] + 1); i++) {
+					   fprintf(fp1, "[02],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[1] + i + 1);
+					   printf("[02],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[1] + i + 1);
+				   }
+			   if (stMessage.aucData[ucDataOffset + 0] == 3 && stMessage.aucData[ucDataOffset + 3] != (lastindex[2] + 1))
+				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[2] + 1); i++) {
+					   fprintf(fp1, "[03],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[2] + i + 1);
+					   printf("[03],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[2] + i + 1);
+				   }
+			   //dato ricevuto dal dispositivo 1, incrementa il conteggio e salva l'indice 
+			   if (stMessage.aucData[ucDataOffset + 0] == 1) {
+				   disp[0]++; 
+				   lastindex[0] = stMessage.aucData[ucDataOffset + 3];
+			   }
+			   if (stMessage.aucData[ucDataOffset + 0] == 2) { 
+				   disp[1]++;
+				   lastindex[1] = stMessage.aucData[ucDataOffset + 3];
+			   }
+			   if (stMessage.aucData[ucDataOffset + 0] == 3) { 
+				   disp[2]++;
+				   lastindex[2] = stMessage.aucData[ucDataOffset + 3];
+			   }
+			   fprintf(fp1, "[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
+				   stMessage.aucData[ucDataOffset + 0],
+				   stMessage.aucData[ucDataOffset + 1],
+				   stMessage.aucData[ucDataOffset + 2],
+				   stMessage.aucData[ucDataOffset + 3],
+				   stMessage.aucData[ucDataOffset + 4],
+				   stMessage.aucData[ucDataOffset + 5],
+				   stMessage.aucData[ucDataOffset + 6],
+				   stMessage.aucData[ucDataOffset + 7]);
+		   }
 		   printf("[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
 			   stMessage.aucData[ucDataOffset + 0],
 			   stMessage.aucData[ucDataOffset + 1],
@@ -1098,22 +1141,6 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 			   stMessage.aucData[ucDataOffset + 5],
 			   stMessage.aucData[ucDataOffset + 6],
 			   stMessage.aucData[ucDataOffset + 7]);
-		   if (stato == 1)
-		   {
-			   fprintf(fp1,"Rx: [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
-				   stMessage.aucData[ucDataOffset + 0],
-				   stMessage.aucData[ucDataOffset + 1],
-				   stMessage.aucData[ucDataOffset + 2],
-				   stMessage.aucData[ucDataOffset + 3],
-				   stMessage.aucData[ucDataOffset + 4],
-				   stMessage.aucData[ucDataOffset + 5],
-				   stMessage.aucData[ucDataOffset + 6],
-				   stMessage.aucData[ucDataOffset + 7]);
-			   if (stMessage.aucData[ucDataOffset + 0] == 1) disp[0]++;  //dato ricevuto dal dispositivo 1, incrementa il conteggio
-			   if (stMessage.aucData[ucDataOffset + 0] == 2) disp[1]++;
-			   if (stMessage.aucData[ucDataOffset + 0] == 3) disp[2]++;
-
-		   }
 	   }
 	   else
 	   {
