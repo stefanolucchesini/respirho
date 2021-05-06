@@ -42,7 +42,7 @@
 #define TIMEOUT_VALUE 25      /**< 25 mseconds timer time-out value. Interrupt a 40Hz*/
 APP_TIMER_DEF(m_repeated_timer_id);     /*Handler for repeated timer */
 
-#define DEVICENUMBER 3     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
+#define DEVICENUMBER 1     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
 //Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 //!!ATTENZIONE!! L'utilizzo dei log con UART aumenta il consumo di corrente, se non si deve fare debug vanno disabilitati 

@@ -1027,7 +1027,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				  UCHAR ucDeviceType = stMessage.aucData[MESSAGE_BUFFER_DATA13_INDEX];
 				  UCHAR ucTransmissionType = stMessage.aucData[MESSAGE_BUFFER_DATA14_INDEX];
 
-				  printf("Chan ID(%d/%d/%d) - ", usDeviceNumber, ucDeviceType, ucTransmissionType);
+				  //printf("Chan ID(%d/%d/%d) - ", usDeviceNumber, ucDeviceType, ucTransmissionType);
 			  }
 		  }
 
@@ -1041,8 +1041,8 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				  printf("Acked Rx:(%d): ", stMessage.aucData[MESSAGE_BUFFER_DATA1_INDEX]);
 			  else if (stMessage.ucMessageID == MESG_BURST_DATA_ID)
 				  printf("Burst(0x%02x) Rx:(%d): ", ((stMessage.aucData[MESSAGE_BUFFER_DATA1_INDEX] & 0xE0) >> 5), stMessage.aucData[MESSAGE_BUFFER_DATA1_INDEX] & 0x1F);
-			  else
-				  printf("Rx:(%d): ", stMessage.aucData[MESSAGE_BUFFER_DATA1_INDEX]);
+			  //else
+				  //printf("Rx:(%d): ", stMessage.aucData[MESSAGE_BUFFER_DATA1_INDEX]);
 		  }
 		  break;
 	  }
