@@ -290,7 +290,13 @@ void Demo::Start()
 		case 'g':
 		{
 			for (int i = 0; i < 3; i++) { disp[i] = 0; dispteo[i] = 0; lastindex[i] = 0; }
+
+			time_t ltime; /* calendar time */
+			ltime = time(NULL); /* get current cal time */
+			printf("Acquisizione partita il %s", asctime(localtime(&ltime)));			
+			
 			time(&start);  //fa partire il cronometro
+
 			stato = 1;
 			break;
 		}
@@ -734,16 +740,6 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
-								fprintf(fp1, "Tx:(% d) : [% 02x] , [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x]\n",
-									USER_ANTCHANNEL,
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA3_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA4_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
 							}
 							cont++;
 						}
@@ -762,16 +758,6 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 							if (bDisplay && verbose_mode)
 							{
 								printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
-									USER_ANTCHANNEL,
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA3_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA4_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
-								fprintf(fp1, "Tx:(% d) : [% 02x] , [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x]\n",
 									USER_ANTCHANNEL,
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
@@ -800,16 +786,6 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 							{
 								
                                printf("Tx:(%d): [%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
-									USER_ANTCHANNEL,
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA3_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA4_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA5_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA6_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA7_INDEX],
-									aucTransmitBuffer[MESSAGE_BUFFER_DATA8_INDEX]);
-								fprintf(fp1, "Tx:(% d) : [% 02x] , [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x], [% 02x]\n",
 									USER_ANTCHANNEL,
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA1_INDEX],
 									aucTransmitBuffer[MESSAGE_BUFFER_DATA2_INDEX],
@@ -1096,17 +1072,20 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 			   //Nuovo dato, controlla se è consecutivo, se non lo è aggiunge un dato dummy
 			   if (stMessage.aucData[ucDataOffset + 0] == 1 && stMessage.aucData[ucDataOffset + 3] != (lastindex[0] + 1))
 				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[0] + 1); i++) {
-					   fprintf(fp1, "[01],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[0] + i + 1);
+					   fprintf(fp1, "[01],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[0] + i + 1);
+					   fprintf(fp1, "%lu\n", (unsigned long)time(NULL));  //aggiungi timestamp
 					   printf("[01],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[0] + i + 1);
 				   }
 			   if (stMessage.aucData[ucDataOffset + 0] == 2 && stMessage.aucData[ucDataOffset + 3] != (lastindex[1] + 1))
 				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[1] + 1); i++) {
-					   fprintf(fp1, "[02],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[1] + i + 1);
+					   fprintf(fp1, "[02],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[1] + i + 1);
+					   fprintf(fp1, "%lu\n", (unsigned long)time(NULL));  //aggiungi timestamp
 					   printf("[02],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[1] + i + 1);
 				   }
 			   if (stMessage.aucData[ucDataOffset + 0] == 3 && stMessage.aucData[ucDataOffset + 3] != (lastindex[2] + 1))
 				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[2] + 1); i++) {
-					   fprintf(fp1, "[03],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[2] + i + 1);
+					   fprintf(fp1, "[03],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[2] + i + 1);
+					   fprintf(fp1, "%lu\n", (unsigned long)time(NULL));  //aggiungi timestamp
 					   printf("[03],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[2] + i + 1);
 				   }
 			   //dato ricevuto dal dispositivo 1, incrementa il conteggio e salva l'indice 
@@ -1122,7 +1101,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				   disp[2]++;
 				   lastindex[2] = stMessage.aucData[ucDataOffset + 3];
 			   }
-			   fprintf(fp1, "[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
+			   fprintf(fp1, "[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],",
 				   stMessage.aucData[ucDataOffset + 0],
 				   stMessage.aucData[ucDataOffset + 1],
 				   stMessage.aucData[ucDataOffset + 2],
@@ -1131,8 +1110,9 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				   stMessage.aucData[ucDataOffset + 5],
 				   stMessage.aucData[ucDataOffset + 6],
 				   stMessage.aucData[ucDataOffset + 7]);
+			   fprintf(fp1, "%lu\n", (unsigned long)time(NULL));  //aggiungi timestamp
 		   }
-		   printf("[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",
+		   printf("[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",  //stampa a schermo la stessa cosa
 			   stMessage.aucData[ucDataOffset + 0],
 			   stMessage.aucData[ucDataOffset + 1],
 			   stMessage.aucData[ucDataOffset + 2],
