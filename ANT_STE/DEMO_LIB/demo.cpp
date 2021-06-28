@@ -18,6 +18,7 @@ All rights reserved.
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <Windows.h>
 
 #define ENABLE_EXTENDED_MESSAGES
 
@@ -81,6 +82,14 @@ int main(int argc, char** argv)
 	else
 		delete pclDemo;
 	return 0;
+}
+
+void timestamp() {
+
+	SYSTEMTIME st;
+	GetLocalTime(&st);
+	fprintf(fp1, "%02d:%02d:%02d:%02d:%02d:%02d\n", st.wDay, st.wMonth, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
+
 }
 
 Demo::Demo()
@@ -291,12 +300,11 @@ void Demo::Start()
 		{
 			for (int i = 0; i < 3; i++) { disp[i] = 0; dispteo[i] = 0; lastindex[i] = 0; }
 
-			time_t ltime; /* calendar time */
-			ltime = time(NULL); /* get current cal time */
-			printf("Acquisizione partita il %s", asctime(localtime(&ltime)));			
-			
-			time(&start);  //fa partire il cronometro
+			SYSTEMTIME st;
+			GetLocalTime(&st);		
+			printf("L'acquisizione e' partita il: %02d/%02d alle %02d:%02d:%02d:%02d\n", st.wDay, st.wMonth, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 
+			time(&start);  //fa partire il cronometro
 			stato = 1;
 			break;
 		}
@@ -1073,19 +1081,19 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 			   if (stMessage.aucData[ucDataOffset + 0] == 1 && stMessage.aucData[ucDataOffset + 3] != (lastindex[0] + 1))
 				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[0] + 1); i++) {
 					   fprintf(fp1, "[01],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[0] + i + 1);
-					   fprintf(fp1, "%lu\n", (unsigned long)time(NULL));  //aggiungi timestamp
+					   timestamp();
 					   printf("[01],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[0] + i + 1);
 				   }
 			   if (stMessage.aucData[ucDataOffset + 0] == 2 && stMessage.aucData[ucDataOffset + 3] != (lastindex[1] + 1))
 				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[1] + 1); i++) {
 					   fprintf(fp1, "[02],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[1] + i + 1);
-					   fprintf(fp1, "%lu\n", (unsigned long)time(NULL));  //aggiungi timestamp
+					   timestamp(); //aggiungi timestamp
 					   printf("[02],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[1] + i + 1);
 				   }
 			   if (stMessage.aucData[ucDataOffset + 0] == 3 && stMessage.aucData[ucDataOffset + 3] != (lastindex[2] + 1))
 				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[2] + 1); i++) {
 					   fprintf(fp1, "[03],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[2] + i + 1);
-					   fprintf(fp1, "%lu\n", (unsigned long)time(NULL));  //aggiungi timestamp
+					   timestamp();  //aggiungi timestamp
 					   printf("[03],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[2] + i + 1);
 				   }
 			   //dato ricevuto dal dispositivo 1, incrementa il conteggio e salva l'indice 
@@ -1110,7 +1118,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				   stMessage.aucData[ucDataOffset + 5],
 				   stMessage.aucData[ucDataOffset + 6],
 				   stMessage.aucData[ucDataOffset + 7]);
-			   fprintf(fp1, "%lu\n", (unsigned long)time(NULL));  //aggiungi timestamp
+			   timestamp();  //aggiungi timestamp
 		   }
 		   printf("[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x]\n",  //stampa a schermo la stessa cosa
 			   stMessage.aucData[ucDataOffset + 0],
