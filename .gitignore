@@ -1,51 +1,79 @@
-# Ignore list for Eagle, a PCB layout tool
 
-# Backup files
-*.s#?
-*.b#?
-*.l#?
-*.b$?
-*.s$?
-*.l$?
+# A .gitignore for Keil projects.
+# Taken mostly from http://www.keil.com/support/man/docs/uv4/uv4_b_filetypes.htm
 
-# Eagle project file
-# It contains a serial number and references to the file structure
-# on your computer.
-# comment the following line if you want to have your project file included.
-eagle.epf
+# User-specific uVision files
+*.opt
+*.uvopt
+*.uvoptx
+*.uvgui
+*.uvgui.*
+*.uvguix.*
 
-# Autorouter files
-*.pro
-*.job
+# Listing files
+*.cod
+*.htm
+*.i
+*.lst
+*.map
+*.m51
+*.m66
+# define exception below if needed
+*.scr
 
-# CAM files
-*.$$$
-*.cmp
-*.ly2
-*.l15
-*.sol
-*.plc
-*.stc
-*.sts
-*.crc
-*.crs
+# Object files
+*.axf
+*.b[0-3][0-9]
+*.d
+*.crf
+*.elf
+*.h86
+*.lib
+*.obj
+*.o
+*.sbr
 
-*.dri
-*.drl
-*.gpi
-*.pls
-*.ger
-*.xln
+# Build files
+# define exception below if needed
+*.bat
+*._ia
+*.__i
+*._ii
 
-*.drd
-*.drd.*
+# Generated output files
+/Listings/*
+/Objects/*
 
-*.s#*
-*.b#*
+# Debugger files
+# define exception below if needed
+*.ini
 
-*.info
+# Other files
+*.build_log.htm
+*.cdb
+*.dep
+*.ic
+*.lin
+*.lnp
+*.orc
+# define exception below if needed
+*.pack
+# define exception below if needed
+*.pdsc
+*.plg
+# define exception below if needed
+*.sct
+*.sfd
+*.sfr
 
-*.eps
+# Miscellaneous
+*.tra
+*.bin
+*.fed
+*.l1p
+*.l2p
+*.iex
+
 
 # file locks introduced since 7.x
 *.lck
@@ -85,3 +113,4 @@ dkms.conf
 *.Stefano
 ANT_STE/DEMO_LIB/test.txt
 ANT_STE/Release/test.txt
+.DS_Store
