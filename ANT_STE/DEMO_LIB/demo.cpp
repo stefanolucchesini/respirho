@@ -208,7 +208,7 @@ BOOL Demo::Init(UCHAR ucDeviceNumberUSB_)
 	char filename[1024];
 	scanf("%s", filename);
 	strcat(filename, ".txt");
-	printf("Initialization was successful!\n"); fflush(stdout);
+	printf("."); fflush(stdout);  //Initialization was successful!\n
 	fopen_s(&fp1, filename, "w");
 	//fopen_s(&fp1, "output.txt", "w");
 	//fwrite(str, 1, sizeof(str), fp1);
@@ -474,12 +474,12 @@ BOOL Demo::InitANT(void)
 	BOOL bStatus;
 
 	// Reset system
-	printf("Resetting module...\n");
+	printf("."); // Resetting module...\n
 	bStatus = pclMessageObject->ResetSystem();
 	DSIThread_Sleep(1000);
 
 	// Start the test by setting network key
-	printf("Setting network key...\n");
+	printf("."); //Setting network key...\n
 	UCHAR ucNetKey[8] = USER_NETWORK_KEY;
 
 	bStatus = pclMessageObject->SetNetworkKey(USER_NETWORK_NUM, ucNetKey, MESSAGE_TIMEOUT);
@@ -550,17 +550,17 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				printf("Error configuring network key: Code 0%d\n", stMessage.aucData[2]);
 				break;
 			}
-			printf("Network key set.\n");
-			printf("Assigning channel...\n");
-
+			printf(".");  //Network key set.\n
+			printf("."); //Assigning channel...\n
+			 
 			bStatus = pclMessageObject->AssignChannel(USER_ANTCHANNEL, PARAMETER_SHARED_MASTER_CHANNEL, 0, MESSAGE_TIMEOUT);
 			break;
 		}
 
 
 		case MESG_RX_EXT_MESGS_ENABLE_ID:
-			printf("Extended messages enabled.\n");
-			printf("READY.\n");
+			printf("."); //Extended messages enabled
+			printf("Pronto!\n");
 			break;
 
 		case MESG_ASSIGN_CHANNEL_ID:
@@ -570,8 +570,8 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				printf("Error assigning channel: Code 0%d\n", stMessage.aucData[2]);
 				break;
 			}
-			printf("Channel assigned\n");
-			printf("Setting Channel ID for ");
+			printf(".");  //Channel assigned\n
+			printf(".");  //Setting Channel ID for 
 			bStatus = pclMessageObject->SetChannelID(USER_ANTCHANNEL, USER_DEVICENUM, USER_DEVICETYPE, USER_TRANSTYPE, MESSAGE_TIMEOUT);
 			break;
 		}
@@ -583,9 +583,9 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				printf("Error configuring Channel ID: Code 0%d\n", stMessage.aucData[2]);
 				break;
 			}
-			printf("Channel ID set\n");
+			printf(".");  //Channel ID set\n
 
-			printf("Setting period to %d... \n", USER_PERIOD);
+			printf(".");  // "Setting period to %d... \n", USER_PERIOD
 			bStatus = pclMessageObject->SetChannelPeriod(USER_ANTCHANNEL, USER_PERIOD, MESSAGE_TIMEOUT);
 			break;
 
@@ -599,8 +599,8 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				printf("Error setting period: Code 0%d\n", stMessage.aucData[2]);
 				break;
 			}
-			printf("Set period to %d. \n", USER_PERIOD);
-			printf("Setting Radio Frequency...\n");
+			printf(".");  //"Set period to %d. \n", USER_PERIOD
+			printf(".");  // Setting Radio Frequency...\n
 			bStatus = pclMessageObject->SetChannelRFFrequency(USER_ANTCHANNEL, USER_RADIOFREQ, MESSAGE_TIMEOUT);
 			break;
 
@@ -613,8 +613,8 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				printf("Error configuring Radio Frequency: Code 0%d\n", stMessage.aucData[2]);
 				break;
 			}
-			printf("Radio Frequency set\n");
-			printf("Opening channel...\n");
+			printf(".");  //Radio Frequency set\n
+			printf(".");  //Opening channel...\n
 			bBroadcasting = TRUE;
 			bStatus = pclMessageObject->OpenChannel(USER_ANTCHANNEL, MESSAGE_TIMEOUT);
 			break;
@@ -628,9 +628,9 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 				bBroadcasting = FALSE;
 				break;
 			}
-			printf("Channel opened\n");
+			printf(".");  //Channel opened\n
 #if defined (ENABLE_EXTENDED_MESSAGES)
-			printf("Enabling extended messages...\n");
+			printf(".");  //Enabling extended messages...\n
 			pclMessageObject->RxExtMesgsEnable(TRUE);
 #endif
 			break;
@@ -879,7 +879,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 
       case MESG_STARTUP_MESG_ID:
 	  {
-		  printf("RESET Complete, reason: ");
+		  printf("."); //RESET Complete, reason: 
 
 		  UCHAR ucReason = stMessage.aucData[MESSAGE_BUFFER_DATA1_INDEX];
 
@@ -890,12 +890,11 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 		  if (ucReason & RESET_SYNC)
 			  printf("RESET_SYNC ");
 		  if (ucReason & RESET_CMD)
-			  printf("RESET_CMD ");
+			  printf(".");  //RESET_CMD 
 		  if (ucReason & RESET_WDT)
 			  printf("RESET_WDT ");
 		  if (ucReason & RESET_RST)
 			  printf("RESET_RST ");
-		  printf("\n");
 
 		  break;
 	  }

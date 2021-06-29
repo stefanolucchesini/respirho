@@ -70,3 +70,11 @@ C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_ANTFS\obj\x86\Release\DEMO_AN
 C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_ANTFS\obj\x86\Release\DEMO_ANTFS.csproj.CopyComplete
 C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_ANTFS\obj\x86\Release\Demo_ANTFS.exe
 C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\DEMO_ANTFS\obj\x86\Release\Demo_ANTFS.pdb
+C:\Users\Stefano\Desktop\respirho\ANT_STE\Release\Demo_ANTFS.exe.config
+C:\Users\Stefano\Desktop\respirho\ANT_STE\Release\Demo_ANTFS.exe
+C:\Users\Stefano\Desktop\respirho\ANT_STE\Release\Demo_ANTFS.pdb
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_ANTFS\obj\x86\Release\DEMO_ANTFS.csprojAssemblyReference.cache
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_ANTFS\obj\x86\Release\DEMO_ANTFS.csproj.CoreCompileInputs.cache
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_ANTFS\obj\x86\Release\DEMO_ANTFS.csproj.CopyComplete
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_ANTFS\obj\x86\Release\Demo_ANTFS.exe
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_ANTFS\obj\x86\Release\Demo_ANTFS.pdb

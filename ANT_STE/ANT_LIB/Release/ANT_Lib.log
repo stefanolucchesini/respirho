@@ -1,11 +1,11 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (ANT_LIB 2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   antfs_client_channel.cpp
-C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\ANTFS\antfs_client_channel.cpp(1046,136): warning C4100: 'pvData_': unreferenced formal parameter
-C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\ANTFS\antfs_client_channel.cpp(1046,115): warning C4100: 'ulDataLength_': unreferenced formal parameter
+C:\Users\Stefano\Desktop\respirho\ANT_STE\ANT_LIB\software\ANTFS\antfs_client_channel.cpp(1046,136): warning C4100: 'pvData_': unreferenced formal parameter
+C:\Users\Stefano\Desktop\respirho\ANT_STE\ANT_LIB\software\ANTFS\antfs_client_channel.cpp(1046,115): warning C4100: 'ulDataLength_': unreferenced formal parameter
   antfs_host.cpp
   antfs_host_channel.cpp
-C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\ANTFS\antfs_host_channel.cpp(5703,28): warning C4458: declaration of 'ucChannelStatus' hides class member
-C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\ANTFS\antfs_host_channel.hpp(138,13): message : see declaration of 'ANTFSHostChannel::ucChannelStatus'
+C:\Users\Stefano\Desktop\respirho\ANT_STE\ANT_LIB\software\ANTFS\antfs_host_channel.cpp(5703,28): warning C4458: declaration of 'ucChannelStatus' hides class member
+C:\Users\Stefano\Desktop\respirho\ANT_STE\ANT_LIB\software\ANTFS\antfs_host_channel.hpp(138,13): message : see declaration of 'ANTFSHostChannel::ucChannelStatus'
   dsi_ant_device.cpp
   dsi_cm_library.cpp
   dsi_ant_device_polling.cpp
@@ -29,12 +29,12 @@ C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\ANTFS\antfs_host_
   usb_device_libusb.cpp
   usb_device_si.cpp
   WinDevice.cpp
+  antfs_directory.c
   checksum.c
   crc.c
-  antfs_directory.c
   dsi_convert.c
   dsi_thread_win32.c
   macros.c
-C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\ANT_LIB\software\system\macros.c(45,17): warning C4245: 'return': conversion from 'int' to 'size_t', signed/unsigned mismatch
-  ANT_Lib.vcxproj -> C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\ANT_LIB.lib
+C:\Users\Stefano\Desktop\respirho\ANT_STE\ANT_LIB\software\system\macros.c(45,17): warning C4245: 'return': conversion from 'int' to 'size_t', signed/unsigned mismatch
+  ANT_Lib.vcxproj -> C:\Users\Stefano\Desktop\respirho\ANT_STE\Release\ANT_LIB.lib
   0 File(s) copied

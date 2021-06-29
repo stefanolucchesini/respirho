@@ -1,2 +1,18 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(519,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (DEMO_DLL 2.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  DEMO_DLL.vcxproj -> C:\Users\Stefano\Desktop\FILE_TESISTI\ANT_STE\Release\DEMO_DLL.exe
+  demo.cpp
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(154,13): warning C4477: 'scanf' : format string '%u' requires an argument of type 'unsigned int *', but variadic argument 1 has type 'UCHAR *'
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(154,13): message : consider using '%hhu' in the format string
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(157,18): warning C4477: 'sscanf' : format string '%u' requires an argument of type 'unsigned int *', but variadic argument 1 has type 'UCHAR *'
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(157,18): message : consider using '%hhu' in the format string
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(154,7): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(157,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(208,21): warning C4477: 'sscanf' : format string '%u' requires an argument of type 'unsigned int *', but variadic argument 1 has type 'UCHAR *'
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(208,21): message : consider using '%hhu' in the format string
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(208,10): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_DLL\demo.cpp(233,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  libant.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 16 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  DEMO_DLL.vcxproj -> C:\Users\Stefano\Desktop\respirho\ANT_STE\Release\DEMO_DLL.exe
