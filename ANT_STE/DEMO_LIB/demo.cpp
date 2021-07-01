@@ -319,20 +319,38 @@ void Demo::Start()
 		case 'q':
 		{
 			// Quit
-			fclose(fp1); //chiude il file creato
-			for (int i = 0; i < 3; i++) printf("Numero campioni ricevuti dall'unita' %d: %d\n", i+1, disp[i]);
-			for (int i = 0; i < 3; i++) printf("Numero campioni teorici unita' %d: %d\n", i + 1, dispteo[i]);
+			fclose(fp1); //chiude il file dati creato
+
+			//GENERAZIONE FILE DI REPORT 
+			fopen_s(&fp1, "Report_Acquisizione.txt", "w");
+			for (int i = 0; i < 3; i++)
+			{ 
+				printf("Numero campioni ricevuti dall'unita' %d: %d\n", i + 1, disp[i]); 
+				fprintf(fp1, "Numero campioni ricevuti dall'unita' %d: %d\n", i + 1, disp[i]);
+			}
+			for (int i = 0; i < 3; i++)
+			{ 
+				printf("Numero campioni teorici unita' %d: %d\n", i + 1, dispteo[i]); 
+				fprintf(fp1, "Numero campioni teorici unita' %d: %d\n", i + 1, dispteo[i]);
+			}
 			dif = difftime(end, start);
-			printf("L'acquisizone e' durata %.2lf secondi\n", dif);
+			printf("L'acquisizone e' durata %.0lf secondi\n", dif);
+			fprintf(fp1, "L'acquisizone e' durata %.0lf secondi\n", dif);
 			float frequenza = dispteo[0] / dif;
-			printf("Frequenza teorica: %.2lf Hz\n", frequenza); //calcolata con campioni teorici
+			printf("Frequenza di sampling: %.2lf Hz\n", frequenza); //calcolata con campioni teorici
+			fprintf(fp1, "Frequenza di sampling: %.2lf Hz\n", frequenza); 
 			float loss1 = (1 - (float)disp[0] / dispteo[0]) * 100;
 			float loss2 = (1 - (float)disp[1] / dispteo[1] )*100;
 			float loss3 = (1 - (float)disp[2] / dispteo[2]) * 100;
 			printf("Data loss unita' 1: %.2lf%%\n", loss1);
 			printf("Data loss unita' 2: %.2lf%%\n", loss2);
 			printf("Data loss unita' 3: %.2lf%%\n", loss3);
-			
+			fprintf(fp1, "Data loss unita' 1: %.2lf%%\n", loss1);
+			fprintf(fp1, "Data loss unita' 2: %.2lf%%\n", loss2);
+			fprintf(fp1, "Data loss unita' 3: %.2lf%%\n", loss3);
+			fclose(fp1); //chiude il file creato
+
+
 			printf("Vuoi fare una nuova acquisizione? (premi s e invio per Si, n e invio per No) \n");
 			bBroadcasting = FALSE;
 			
@@ -345,12 +363,12 @@ void Demo::Start()
 				uiDSIThread = DSIThread_CreateThread(&Demo::RunMessageThread, this);
 				assert(uiDSIThread);
 
-				printf("Name of the new file: "); fflush(stdout);
+				printf("Nome del nuovo file: "); fflush(stdout);
 				char filename[1024];
 				scanf("%s", filename);
 				strcat(filename, ".txt ");
 
-				printf("Initialization was successful!\n"); fflush(stdout);
+				printf("Inizializzazione completata!\n"); fflush(stdout);
 				fopen_s(&fp1, filename, "w");
 				bStatus = InitANT(); //re-inizializza
 				break;
@@ -474,7 +492,7 @@ BOOL Demo::InitANT(void)
 	BOOL bStatus;
 
 	// Reset system
-	printf("."); // Resetting module...\n
+	printf("Attendere"); // Resetting module...\n
 	bStatus = pclMessageObject->ResetSystem();
 	DSIThread_Sleep(1000);
 
@@ -884,7 +902,7 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 		  UCHAR ucReason = stMessage.aucData[MESSAGE_BUFFER_DATA1_INDEX];
 
 		  if (ucReason == RESET_POR)
-			  printf("RESET_POR");
+			  printf(".");  //"RESET_POR"
 		  if (ucReason & RESET_SUSPEND)
 			  printf("RESET_SUSPEND ");
 		  if (ucReason & RESET_SYNC)
