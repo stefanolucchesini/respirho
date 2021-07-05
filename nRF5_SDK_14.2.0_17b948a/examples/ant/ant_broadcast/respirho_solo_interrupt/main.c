@@ -42,7 +42,7 @@
 #define TIMEOUT_VALUE 25      /**< 25 mseconds timer time-out value. Interrupt a 40Hz*/
 APP_TIMER_DEF(m_repeated_timer_id);     /*Handler for repeated timer */
 
-#define DEVICENUMBER 1     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
+#define DEVICENUMBER 3     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
 //Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 //!!ATTENZIONE!! L'utilizzo dei log con UART aumenta il consumo di corrente, se non si deve fare debug vanno disabilitati 
@@ -386,6 +386,10 @@ void ant_evt_handler(ant_evt_t * p_ant_evt, void * p_context)
 								    }		
                 }
                 break;
+						case EVENT_RX_SEARCH_TIMEOUT:	   //in caso di timeout riapre il canale
+						err_code = sd_ant_channel_open(BROADCAST_CHANNEL_NUMBER);
+						APP_ERROR_CHECK(err_code); 
+						break;							
 
             default:
                 break;
@@ -491,7 +495,7 @@ static void repeated_timer_handler(void * p_context)  //app timer
 
 int main(void)
 {
-	  //NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
+	  NRF_POWER->DCDCEN = 1;   //Abilita alimentatore DCDC. Attenzione! Devono esserci collegati gli induttori se no non va niente!
 	  nrf_gpio_cfg_output(LED);
 		nrf_gpio_pin_set(LED);
 
