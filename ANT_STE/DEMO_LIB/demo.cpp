@@ -57,9 +57,9 @@ All rights reserved.
 
 FILE* fp1;
 int stato = 0;
-int disp[] = {0, 0, 0}; //contiene il numero di campioni acquisiti dall'unità 1, 2 e 3
+int precdisp[] = {0, 0, 0};  //contiene il numero di campioni acquisiti dall'unità 1, 2 e 3 (serve a stampare i pacchetti persi)
+int dispreal[] = { 0, 0, 0 };  //contiene il numero di campioni acquisiti dall'unità 1, 2 e 3 (serve a calcolare il data loss)
 int dispteo[] = {0, 0, 0}; //contiene il numero di campioni che le unità 1, 2, 3 avrebbero dovuto acquisire 
-uint8_t lastindex[] = { 0, 0, 0 }; //contiene l'ultimo indice ricevuto dai dispositivi 1,2,3 
 int cont = 0;
 bool verbose_mode = FALSE; //modalità verbosa, se disattivata non mostra e non salva tutti i printf che contengono Tx: ...
 time_t start, end;
@@ -298,7 +298,7 @@ void Demo::Start()
 		case 'G':   //fa partire l'acquisizione
 		case 'g':
 		{
-			for (int i = 0; i < 3; i++) { disp[i] = 0; dispteo[i] = 0; lastindex[i] = 0; }
+			for (int i = 0; i < 3; i++) { precdisp[i] = 0; dispteo[i] = 0; dispreal[i] = 0; }
 
 			SYSTEMTIME st;
 			GetLocalTime(&st);		
@@ -325,8 +325,8 @@ void Demo::Start()
 			fopen_s(&fp1, "Report_Acquisizione.txt", "w");
 			for (int i = 0; i < 3; i++)
 			{ 
-				printf("Numero campioni ricevuti dall'unita' %d: %d\n", i + 1, disp[i]); 
-				fprintf(fp1, "Numero campioni ricevuti dall'unita' %d: %d\n", i + 1, disp[i]);
+				printf("Numero campioni ricevuti dall'unita' %d: %d\n", i + 1, dispreal[i]); 
+				fprintf(fp1, "Numero campioni ricevuti dall'unita' %d: %d\n", i + 1, dispreal[i]);
 			}
 			for (int i = 0; i < 3; i++)
 			{ 
@@ -339,9 +339,9 @@ void Demo::Start()
 			float frequenza = dispteo[0] / dif;
 			printf("Frequenza di sampling: %.2lf Hz\n", frequenza); //calcolata con campioni teorici
 			fprintf(fp1, "Frequenza di sampling: %.2lf Hz\n", frequenza); 
-			float loss1 = (1 - (float)disp[0] / dispteo[0]) * 100;
-			float loss2 = (1 - (float)disp[1] / dispteo[1] )*100;
-			float loss3 = (1 - (float)disp[2] / dispteo[2]) * 100;
+			float loss1 = (1 - (float)dispreal[0] / dispteo[0]) * 100;
+			float loss2 = (1 - (float)dispreal[1] / dispteo[1] )*100;
+			float loss3 = (1 - (float)dispreal[2] / dispteo[2]) * 100;
 			printf("Data loss unita' 1: %.2lf%%\n", loss1);
 			printf("Data loss unita' 2: %.2lf%%\n", loss2);
 			printf("Data loss unita' 3: %.2lf%%\n", loss3);
@@ -753,6 +753,12 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 						{
 							pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
 							dispteo[0]++;
+							if (precdisp[0] != dispteo[0] -1 ) {  //il campione precedente è andato perso, la prima iterazione non viene contata
+								fprintf(fp1, "[01],[00],[FF],[00],[00],[00],[00],[00],");
+								timestamp();
+								printf("[01],[00],[FF],[00],[00],[00],[00],[00]\n");
+								precdisp[0]++;
+							}
 							// Echo what the data will be over the air on the next message period.
 							if (bDisplay && verbose_mode)
 							{
@@ -775,6 +781,12 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 					{
 						aucTransmitBuffer[0] = 2;
 						dispteo[1]++;
+						if (precdisp[1] != dispteo[1] - 1 ) {  //il campione precedente è andato perso
+							fprintf(fp1, "[02],[00],[FF],[00],[00],[00],[00],[00],");
+							timestamp();
+							printf("[02],[00],[FF],[00],[00],[00],[00],[00]\n");
+							precdisp[1]++;
+						}
 
 						if (bBroadcasting)
 						{
@@ -802,6 +814,12 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 					{
 						aucTransmitBuffer[0] = 3;
 						dispteo[2]++;
+						if (precdisp[2] != dispteo[2] - 1 ) {  //il campione precedente è andato perso
+							fprintf(fp1, "[03],[00],[FF],[00],[00],[00],[00],[00],");
+							timestamp();
+							printf("[03],[00],[FF],[00],[00],[00],[00],[00]\n");
+							precdisp[2]++;
+						}
 
 						if (bBroadcasting)
 						{
@@ -1094,37 +1112,16 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 	   {		   
 		   if (stato == 1)
 		   {
-			   //Nuovo dato, controlla se è consecutivo, se non lo è aggiunge un dato dummy
-			   if (stMessage.aucData[ucDataOffset + 0] == 1 && stMessage.aucData[ucDataOffset + 3] != (lastindex[0] + 1))
-				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[0] + 1); i++) {
-					   fprintf(fp1, "[01],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[0] + i + 1);
-					   timestamp();
-					   printf("[01],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[0] + i + 1);
-				   }
-			   if (stMessage.aucData[ucDataOffset + 0] == 2 && stMessage.aucData[ucDataOffset + 3] != (lastindex[1] + 1))
-				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[1] + 1); i++) {
-					   fprintf(fp1, "[02],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[1] + i + 1);
-					   timestamp(); //aggiungi timestamp
-					   printf("[02],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[1] + i + 1);
-				   }
-			   if (stMessage.aucData[ucDataOffset + 0] == 3 && stMessage.aucData[ucDataOffset + 3] != (lastindex[2] + 1))
-				   for (int i = 0; i < stMessage.aucData[ucDataOffset + 3] - (lastindex[2] + 1); i++) {
-					   fprintf(fp1, "[03],[00],[FF],[%02x],[00],[00],[00],[00],", lastindex[2] + i + 1);
-					   timestamp();  //aggiungi timestamp
-					   printf("[03],[00],[FF],[%02x],[00],[00],[00],[00]\n", lastindex[2] + i + 1);
-				   }
+			   
 			   //dato ricevuto dal dispositivo 1, incrementa il conteggio e salva l'indice 
 			   if (stMessage.aucData[ucDataOffset + 0] == 1) {
-				   disp[0]++; 
-				   lastindex[0] = stMessage.aucData[ucDataOffset + 3];
+				   precdisp[0]++; dispreal[0]++;
 			   }
 			   if (stMessage.aucData[ucDataOffset + 0] == 2) { 
-				   disp[1]++;
-				   lastindex[1] = stMessage.aucData[ucDataOffset + 3];
+				   precdisp[1]++; dispreal[1]++;
 			   }
 			   if (stMessage.aucData[ucDataOffset + 0] == 3) { 
-				   disp[2]++;
-				   lastindex[2] = stMessage.aucData[ucDataOffset + 3];
+				   precdisp[2]++; dispreal[2]++;
 			   }
 			   fprintf(fp1, "[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],",
 				   stMessage.aucData[ucDataOffset + 0],
