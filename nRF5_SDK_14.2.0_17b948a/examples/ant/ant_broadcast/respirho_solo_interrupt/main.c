@@ -43,7 +43,7 @@
 APP_TIMER_DEF(m_repeated_timer_id);     /*Handler for repeated timer */
 
 #define DEVICENUMBER 3     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
-//Il #define MAGNETOMETRO_ABILITATO si trova in quat.h
+#define IGNORA_MAGNETOMETRO 1  //Se il magnetometro si scalibra sempre, si può calcolare il quaternione con dati magnetici dummy
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 //!!ATTENZIONE!! L'utilizzo dei log con UART aumenta il consumo di corrente, se non si deve fare debug vanno disabilitati 
 //nel file sdk_config.h
@@ -73,7 +73,7 @@ gyro_values_float_t gyro;
 nrf_saadc_value_t sample;
 ret_code_t err_code;		
 
-void saadc_callback(nrf_drv_saadc_evt_t const * p_event)
+void saadc_callback(nrf_drv_saadc_evt_t const * p_event)  //non serve
 {
 	
 }
@@ -124,35 +124,24 @@ void icm_init(void)
 		APP_ERROR_CHECK(ret_code); // Check for errors in return value
 	
 		ICM20948_reset();
-		ICM20948_selectAutoClockSource();
-
-		//ICM20948_enableI2cMaster(); //da valutare se inserire
-				
+		ICM20948_selectAutoClockSource();				
 		ICM20948_enableAccelGyro();
 		ICM20948_configAccel();
 		ICM20948_configGyro();
 		ICM20948_setGyroSrd(21); //19 nella versione MPU. ODR is computed as follows: 1.1 kHz/(1+GYRO_SMPLRT_DIV[7:0]) 1100/(1+21) = 50 Hz
 		ICM20948_setAccelSrd(21);//19 nella versione MPU (in ICM sono due registri separati, mentre in MPU è unico )
 		//ODR is computed as follows: 1.125 kHz/(1+ACCEL_SMPLRT_DIV[11:0]) 1125/(21+1) = 51.136 Hz
-		
-		if(MAGNETOMETRO_ABILITATO){
-		
-	 ICM20948_resetMag();
-
-			
+	  ICM20948_resetMag();	
 		app_icm_magn_config_t magnetometer_config;
-		
 		magnetometer_config.mode = MAG_CNTL2_MODE_100HZ; //continuous measurment mode 4 = 100 Hz
-		
-
 		ret_code = app_icm_magnetometer_init(&magnetometer_config);
 		if (ret_code) NRF_LOG_INFO("Ret code magnetometro: %d", ret_code);	
  		APP_ERROR_CHECK(ret_code);
-		
-    }
+	
 }
 
 void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
+	if(IGNORA_MAGNETOMETRO) return;  //è inutile calibrare se tanto ignora i dati
 	flag_cal = 1;
 	int16_t max_x;
 	int16_t min_x;
@@ -309,22 +298,6 @@ void leggi_calib_flash(){
 }
 
 /* ANT functions*/
- void ant_message_send(void)
-{
-    uint8_t         message_payload[ANT_STANDARD_DATA_PAYLOAD_SIZE];
-
-    memset(message_payload, 0, ANT_STANDARD_DATA_PAYLOAD_SIZE);
-    // Assign a new value to the broadcast data.
-    message_payload[ANT_STANDARD_DATA_PAYLOAD_SIZE - 8] = 1;
-		message_payload[ANT_STANDARD_DATA_PAYLOAD_SIZE - 7] = 0;
-	
-    // Broadcast the data.
-    ret_code_t err_code = sd_ant_broadcast_message_tx(BROADCAST_CHANNEL_NUMBER,
-                                                      ANT_STANDARD_DATA_PAYLOAD_SIZE,
-                                                      message_payload);
-    APP_ERROR_CHECK(err_code);
-
-}
 void ant_send(int campione, int counter, int quat1, int quat2, int quat3, int quat4)
 {
     uint8_t         message_payload[ANT_STANDARD_DATA_PAYLOAD_SIZE];
@@ -462,14 +435,18 @@ static void repeated_timer_handler(void * p_context)  //app timer
 							if( gyro_values.x == 0 && gyro_values.y == 0 && gyro_values.z == 0 ) nrf_gpio_pin_set(LED);
 							
 							//Magnetometer data read
-							if(MAGNETOMETRO_ABILITATO){
-							
+							if(!IGNORA_MAGNETOMETRO){
 							err_code = app_icm_read_magnetometer(&magn_values, NULL);
 							APP_ERROR_CHECK(err_code);
 							mx=(((magn_values.x)*0.15)+magnetometer_bias[0])*magnetometer_scale[0];
 							my=(((magn_values.y)*0.15)+magnetometer_bias[1])*magnetometer_scale[1];
 							mz=(((magn_values.z)*0.15)+magnetometer_bias[2])*magnetometer_scale[2];
 							if( magn_values.x == 0 && magn_values.y == 0 && magn_values.z == 0 ) nrf_gpio_pin_set(LED);							
+							}
+							else { //vettore magnetico dummy 
+							mx=(120*0.15+magnetometer_bias[0])*magnetometer_scale[0];
+							my=(50*0.15+magnetometer_bias[1])*magnetometer_scale[1];
+							mz=(120*0.15+magnetometer_bias[2])*magnetometer_scale[2];
 							}
 			
 							err_code = nrf_drv_saadc_sample_convert(SAADC_BATTERY, &sample);   //lettura ADC
