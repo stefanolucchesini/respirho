@@ -57,9 +57,10 @@ All rights reserved.
 
 FILE* fp1;
 int stato = 0;
-int precdisp[] = {0, 0, 0};  //contiene il numero di campioni acquisiti dall'unità 1, 2 e 3 (serve a stampare i pacchetti persi)
+int precdisp[] = {0, 0, 0};  //array di flag, dice se il campione è arrivato
 int dispreal[] = { 0, 0, 0 };  //contiene il numero di campioni acquisiti dall'unità 1, 2 e 3 (serve a calcolare il data loss)
 int dispteo[] = {0, 0, 0}; //contiene il numero di campioni che le unità 1, 2, 3 avrebbero dovuto acquisire 
+int started_1, started_2, started_3;
 int cont = 0;
 bool verbose_mode = FALSE; //modalità verbosa, se disattivata non mostra e non salva tutti i printf che contengono Tx: ...
 time_t start, end;
@@ -299,7 +300,7 @@ void Demo::Start()
 		case 'g':
 		{
 			for (int i = 0; i < 3; i++) { precdisp[i] = 0; dispteo[i] = 0; dispreal[i] = 0; }
-
+			started_1 = 0; started_2 = 0; started_3 = 0;
 			SYSTEMTIME st;
 			GetLocalTime(&st);		
 			printf("L'acquisizione e' partita il: %02d/%02d alle %02d:%02d:%02d:%02d\n", st.wDay, st.wMonth, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
@@ -753,11 +754,16 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 						{
 							pclMessageObject->SendBroadcastData(USER_ANTCHANNEL, aucTransmitBuffer);
 							dispteo[0]++;
-							if (precdisp[0] != dispteo[0] -1 ) {  //il campione precedente è andato perso, la prima iterazione non viene contata
-								fprintf(fp1, "[01],[00],[FF],[00],[00],[00],[00],[00],");
-								timestamp();
-								printf("[01],[00],[FF],[00],[00],[00],[00],[00]\n");
-								precdisp[0]++;
+							if (precdisp[0] == 1) 
+								precdisp[0] = 0;   //il campione è arrivato, azzero il flag
+							else
+							{    //il campione non è arrivato, aggiungo il dato mancante, ma solo dopo aver ricevuto il primo campione in assoluto
+								if (started_1) 
+								{
+									fprintf(fp1, "[01],[00],[FF],[00],[00],[00],[00],[00],");
+									timestamp();
+									printf("[01],[00],[FF],[00],[00],[00],[00],[00]\n");
+								}
 							}
 							// Echo what the data will be over the air on the next message period.
 							if (bDisplay && verbose_mode)
@@ -781,11 +787,16 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 					{
 						aucTransmitBuffer[0] = 2;
 						dispteo[1]++;
-						if (precdisp[1] != dispteo[1] - 1 ) {  //il campione precedente è andato perso
-							fprintf(fp1, "[02],[00],[FF],[00],[00],[00],[00],[00],");
-							timestamp();
-							printf("[02],[00],[FF],[00],[00],[00],[00],[00]\n");
-							precdisp[1]++;
+						if (precdisp[1] == 1)
+							precdisp[1] = 0;
+						else
+						{  //il campione non è arrivato, aggiungo il dato mancante, ma solo dopo aver ricevuto il primo campione in assoluto
+							if (started_2)
+							{
+								fprintf(fp1, "[02],[00],[FF],[00],[00],[00],[00],[00],");
+								timestamp();
+								printf("[02],[00],[FF],[00],[00],[00],[00],[00]\n");
+							}
 						}
 
 						if (bBroadcasting)
@@ -814,11 +825,16 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 					{
 						aucTransmitBuffer[0] = 3;
 						dispteo[2]++;
-						if (precdisp[2] != dispteo[2] - 1 ) {  //il campione precedente è andato perso
-							fprintf(fp1, "[03],[00],[FF],[00],[00],[00],[00],[00],");
-							timestamp();
-							printf("[03],[00],[FF],[00],[00],[00],[00],[00]\n");
-							precdisp[2]++;
+						if (precdisp[2] == 1)
+							precdisp[2] = 0;
+						else
+						{ //il campione non è arrivato, aggiungo il dato mancante, ma solo dopo aver ricevuto il primo campione in assoluto
+							if (started_3)
+							{
+								fprintf(fp1, "[03],[00],[FF],[00],[00],[00],[00],[00],");
+								timestamp();
+								printf("[03],[00],[FF],[00],[00],[00],[00],[00]\n");
+							}
 						}
 
 						if (bBroadcasting)
@@ -1113,15 +1129,23 @@ void Demo::ProcessMessage(ANT_MESSAGE stMessage, USHORT usSize_)
 		   if (stato == 1)
 		   {
 			   
-			   //dato ricevuto dal dispositivo 1, incrementa il conteggio e salva l'indice 
+			   //dato ricevuto dal dispositivo 1, incrementa il conteggio e attiva flag ricezione
 			   if (stMessage.aucData[ucDataOffset + 0] == 1) {
-				   precdisp[0]++; dispreal[0]++;
+				   precdisp[0] = 1; 
+				   started_1 = 1;
+				   dispreal[0]++;
 			   }
+			   //dato ricevuto dal dispositivo 2, incrementa il conteggio e attiva flag ricezione
 			   if (stMessage.aucData[ucDataOffset + 0] == 2) { 
-				   precdisp[1]++; dispreal[1]++;
+				   precdisp[1] = 1; 
+				   started_2 = 1;
+				   dispreal[1]++;
 			   }
+			   //dato ricevuto dal dispositivo 3, incrementa il conteggio e attiva flag ricezione
 			   if (stMessage.aucData[ucDataOffset + 0] == 3) { 
-				   precdisp[2]++; dispreal[2]++;
+				   precdisp[2] = 1; 
+				   started_3 = 1;
+				   dispreal[2]++;
 			   }
 			   fprintf(fp1, "[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],[%02x],",
 				   stMessage.aucData[ucDataOffset + 0],

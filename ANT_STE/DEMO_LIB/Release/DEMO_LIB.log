@@ -1,14 +1,14 @@
 ﻿  demo.cpp
-C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(210,2): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(209,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(339,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(369,5): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(261,3): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(360,4): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(368,5): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(211,2): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(210,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(340,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(370,5): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(262,3): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(361,4): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_LIB\demo.cpp(369,5): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   Generating code
-  1 of 787 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  0 of 787 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   DEMO_LIB.vcxproj -> C:\Users\Stefano\Desktop\respirho\ANT_STE\Release\DEMO_LIB.exe

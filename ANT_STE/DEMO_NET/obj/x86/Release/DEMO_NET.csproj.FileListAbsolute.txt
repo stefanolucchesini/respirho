@@ -71,3 +71,4 @@ C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_NET\obj\x86\Release\DEMO_NET.cspr
 C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_NET\obj\x86\Release\DEMO_NET.csproj.CopyComplete
 C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_NET\obj\x86\Release\demo_net.exe
 C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_NET\obj\x86\Release\demo_net.pdb
+C:\Users\Stefano\Desktop\respirho\ANT_STE\DEMO_NET\obj\x86\Release\DEMO_NET.csprojAssemblyReference.cache
