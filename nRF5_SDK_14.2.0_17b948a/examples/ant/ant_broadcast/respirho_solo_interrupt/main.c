@@ -42,8 +42,8 @@
 #define TIMEOUT_VALUE 25      /**< 25 mseconds timer time-out value. Interrupt a 40Hz*/
 APP_TIMER_DEF(m_repeated_timer_id);     /*Handler for repeated timer */
 
-#define DEVICENUMBER 3     //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
-#define IGNORA_MAGNETOMETRO 1  //Se il magnetometro si scalibra sempre, si può calcolare il quaternione con dati magnetici dummy
+#define DEVICENUMBER 3   //1 = TORACE, 2 = ADDOME o 3 = REFERENCE
+#define IGNORA_MAGNETOMETRO 0  //Se il magnetometro si scalibra sempre, si può calcolare il quaternione con dati magnetici dummy
 //I pin che definiscono SCL e SDA sono in nrf_drv_mpu_twi.c, CONTROLLARE CHE SIANO GIUSTI PER PRIMA COSA!!
 //!!ATTENZIONE!! L'utilizzo dei log con UART aumenta il consumo di corrente, se non si deve fare debug vanno disabilitati 
 //nel file sdk_config.h
@@ -56,8 +56,8 @@ volatile float quat[4];
 //Valori default di calibrazione
 volatile float magnetometer_bias[] = {+15.6000004, -12.1499996, -11.6999998};  // X, Y, Z
 volatile float magnetometer_scale[] = {1.02588999, 0.990625024, 0.984472036};   //X, Y, Z
-volatile float acc_bias[] = {0.00258519663, -0.00990874227, -0.01995349}; //X, Y, Z
-volatile float gyro_bias[] = {0.0176442917, -0.0170090254, +0.00491240807}; //X, Y, Z
+volatile float acc_bias[] = {-0.0217083115, +0.0340574495, -0.02073884}; //X, Y, Z
+volatile float gyro_bias[] = {-0.00743509503, +0.0040876139, -0.0127511621}; //X, Y, Z
 volatile int cal_rec = 0;  //impedisce che si faccia più di una calibrazione, se se ne vuole fare un'altra bisogna spegnere e riaccendere
 volatile int flag_cal = 0;  //flag che definisce calibrazione in corso
 #define START_ADDR 0x00011200  //indirizzo di partenza per salvataggio dati in memoria non volatile
@@ -159,9 +159,9 @@ void calibrazione(){  //funzione di calibrazione dell'IMU (giro, acc e magne)
 							//accelerometro
 							err_code = app_icm_read_accel(&acc_values);
 							APP_ERROR_CHECK(err_code);
-							acc_bias[0]=(acc_values.x/16384.)+acc_bias[0];
-							acc_bias[1]=(acc_values.y/16384.)+acc_bias[1];
-							acc_bias[2]=(acc_values.z/16384.)+acc_bias[2];
+							acc_bias[0]=(acc_values.x/4096.)+acc_bias[0];
+							acc_bias[1]=(acc_values.y/4096.)+acc_bias[1];
+							acc_bias[2]=(acc_values.z/4096.)+acc_bias[2];
 
 							//giroscopio
 							err_code = app_icm_read_gyro(&gyro_values);
