@@ -420,33 +420,33 @@ static void repeated_timer_handler(void * p_context)  //app timer
 							APP_ERROR_CHECK(err_code);
 						
 							//Sensitivity 4G
-							acc.x=((acc_values.x)/4096.)+acc_bias[0];
-							acc.y=((acc_values.y)/4096.)+acc_bias[1];
-							acc.z=((acc_values.z)/4096.)+acc_bias[2];
+							acc.x=((acc_values.x)/4096.)-acc_bias[0];
+							acc.y=((acc_values.y)/4096.)-acc_bias[1];
+							acc.z=((acc_values.z)/4096.)-acc_bias[2];
 							if( acc_values.x == 0 && acc_values.y == 0 && acc_values.z == 0 ) nrf_gpio_pin_set(LED);
 							
 							//Gyroscope data read
 							err_code = app_icm_read_gyro(&gyro_values);
 							APP_ERROR_CHECK(err_code);			
 							//sensitivity 500 dps	
-						  gyro.x=(gyro_values.x/65.54)*PI/180.0f+gyro_bias[0];
-							gyro.y=(gyro_values.y/65.54)*PI/180.0f+gyro_bias[1];
-							gyro.z=(gyro_values.z/65.54)*PI/180.0f+gyro_bias[2];
+						  gyro.x=(gyro_values.x/65.54)*PI/180.0f-gyro_bias[0];
+							gyro.y=(gyro_values.y/65.54)*PI/180.0f-gyro_bias[1];
+							gyro.z=(gyro_values.z/65.54)*PI/180.0f-gyro_bias[2];
 							if( gyro_values.x == 0 && gyro_values.y == 0 && gyro_values.z == 0 ) nrf_gpio_pin_set(LED);
 							
 							//Magnetometer data read
 							if(!IGNORA_MAGNETOMETRO){
 							err_code = app_icm_read_magnetometer(&magn_values, NULL);
 							APP_ERROR_CHECK(err_code);
-							mx=(((magn_values.x)*0.15)+magnetometer_bias[0])*magnetometer_scale[0];
-							my=(((magn_values.y)*0.15)+magnetometer_bias[1])*magnetometer_scale[1];
-							mz=(((magn_values.z)*0.15)+magnetometer_bias[2])*magnetometer_scale[2];
+							mx=(((magn_values.x)*0.15)-magnetometer_bias[0])*magnetometer_scale[0];
+							my=(((magn_values.y)*0.15)-magnetometer_bias[1])*magnetometer_scale[1];
+							mz=(((magn_values.z)*0.15)-magnetometer_bias[2])*magnetometer_scale[2];
 							if( magn_values.x == 0 && magn_values.y == 0 && magn_values.z == 0 ) nrf_gpio_pin_set(LED);							
 							}
 							else { //vettore magnetico dummy 
-							mx=(120*0.15+magnetometer_bias[0])*magnetometer_scale[0];
-							my=(50*0.15+magnetometer_bias[1])*magnetometer_scale[1];
-							mz=(120*0.15+magnetometer_bias[2])*magnetometer_scale[2];
+							mx=(120*0.15-magnetometer_bias[0])*magnetometer_scale[0];
+							my=(50*0.15-magnetometer_bias[1])*magnetometer_scale[1];
+							mz=(120*0.15-magnetometer_bias[2])*magnetometer_scale[2];
 							}
 			
 							err_code = nrf_drv_saadc_sample_convert(SAADC_BATTERY, &sample);   //lettura ADC
